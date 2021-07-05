@@ -7,5 +7,9 @@
 
 declare namespace NodeJS {
   // Extend `process.env` for better type completion
-  interface ProcessEnv {}
+  interface ProcessEnv {
+    NEXTAUTH_SECRET: string
+    NEXTAUTH_JWT_SECRET: string
+    NEXTAUTH_URL: string
+  }
 }
