@@ -1,5 +1,5 @@
 import { render as _render, RenderOptions, RenderResult } from '@testing-library/react'
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 type ProviderProps = {
   children: ReactNode

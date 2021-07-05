@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { AppProps } from 'next/app'
+import type { AppProps } from 'next/app'
 import '../styles/globals.css'
 
 const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
