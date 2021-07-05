@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum UserRole {
+  ADMIN
+  USER
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  name         String
+  email        String   @unique
+  passwordHash String
+  picture      String
+  role         UserRole @default(USER)
+  Project      Site[]
+}
+
+model Site {
+  id            String     @id @default(uuid())
+  site          String     @unique
+  owner         User       @relation(fields: [ownerId], references: [id])
+  ownerId       Int
+  allowFeedback Boolean    @default(true)
+  isPublic      Boolean    @default(false)
+  // collectDeviceInfo Boolean @default(false)
+  Feedback      Feedback[]
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+}
+
+enum FeedbackType {
+  ISSUE
+  IDEA
+  OTHER
+}
+
+model Feedback {
+  id        String   @id @default(uuid())
+  text      String
+  site      Site     @relation(fields: [siteId], references: [id])
+  siteId    String
+  createdAt DateTime @default(now())
+  userId    String
+}
