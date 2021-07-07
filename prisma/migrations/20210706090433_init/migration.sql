@@ -9,7 +9,8 @@ CREATE TABLE "User" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "image" TEXT NOT NULL,
+    "passwordHash" TEXT NOT NULL,
+    "picture" TEXT NOT NULL,
     "role" "UserRole" NOT NULL DEFAULT E'USER',
 
     PRIMARY KEY ("id")

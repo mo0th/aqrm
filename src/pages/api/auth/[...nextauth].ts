@@ -11,7 +11,6 @@ const config: NextAuthOptions = {
   },
   providers: [
     Providers.Credentials({
-      name: 'Username / Password Login',
       credentials: [
         { label: 'Email', type: 'email' },
         { label: 'Password', type: 'password' },
@@ -21,13 +20,37 @@ const config: NextAuthOptions = {
       },
     }),
   ],
-  debug: process.env.NODE_ENV === 'production',
+  debug: process.env.NODE_ENV !== 'production',
   secret: process.env.NEXTAUTH_SECRET,
   jwt: {
     secret: process.env.NEXTAUTH_JWT_SECRET,
   },
+  pages: {
+    signIn: '/login',
+    signOut: '/logout',
+    error: '/login-error',
+  },
+  callbacks: {
+    session: async (session, user) => {
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: user.id,
+        },
+      }
+    },
+    jwt: async (token, user) => {
+      if (!user) {
+        return token
+      }
+      return { ...token, id: user.id, image: user.picture }
+    },
+  },
 }
 
-const handler: NextApiHandler = (req, res) => NextAuth(req, res, config)
+const handler: NextApiHandler = (req, res) => {
+  return NextAuth(req, res, config)
+}
 
 export default handler

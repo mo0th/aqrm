@@ -1,8 +1,11 @@
 import type { User } from 'next-auth'
-import crypto from 'crypto'
-import { prisma } from './prisma.server'
 import { hash, compare } from 'bcryptjs'
-import { ApiError } from 'next/dist/next-server/server/api-utils'
+import crypto from 'crypto'
+import { z, ZodError } from 'zod'
+
+import type { ApiUser } from '@/types'
+import { prisma } from './prisma.server'
+import { sleep } from './utils'
 
 const hashPassword = (password: string): Promise<string> => {
   return hash(password, 12)
@@ -28,6 +31,7 @@ export const loginUser = async (email: string, password: string): Promise<User |
   const isPasswordCorrect = await verifyPasswordHash(existingUser.passwordHash, password)
 
   if (!isPasswordCorrect) {
+    await sleep(1000)
     return null
   }
 
@@ -43,12 +47,28 @@ export const signupUser = async (name: string, email: string, password: string):
   const existingUser = await prisma.user.findUnique({ where: { email } })
 
   if (existingUser) {
-    throw new ApiError(406, 'User already exists')
+    await sleep(1000)
+    throw new ZodError([
+      { path: ['email'], message: 'A user with this email already exists', code: 'custom' },
+    ])
   }
 
   const passwordHash = await hashPassword(password)
 
   await prisma.user.create({
     data: { email, passwordHash, name, picture: createGravatarUrl(email) },
+  })
+}
+
+export const signupBodySchema = z.object({
+  email: z.string().email({ message: 'Email must be a valid email' }),
+  name: z.string().min(1, { message: 'Name must be at least 1 character long' }),
+  password: z.string().min(8, { message: 'Password must be at least 8 characters long' }),
+})
+
+export const getUserByIdWithoutPassword = async (id: number): Promise<ApiUser | null> => {
+  return prisma.user.findUnique({
+    where: { id },
+    select: { id: true, email: true, name: true, picture: true, role: true },
   })
 }
