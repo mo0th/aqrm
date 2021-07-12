@@ -6,6 +6,9 @@ import { z, ZodError } from 'zod'
 import type { ApiUser } from '@/types'
 import { prisma } from './prisma.server'
 import { sleep } from './utils'
+import type { NextApiRequest } from 'next'
+import { getSession } from 'next-auth/client'
+import { ApiError } from './error.server'
 
 const hashPassword = (password: string): Promise<string> => {
   return hash(password, 12)
@@ -68,7 +71,22 @@ export const signupBodySchema = z.object({
 
 export const getUserByIdWithoutPassword = async (id: number): Promise<ApiUser | null> => {
   return prisma.user.findUnique({
-    where: { id },
+    where: { id: id ?? -1 },
     select: { id: true, email: true, name: true, picture: true, role: true },
   })
+}
+
+export const getUserFromRequest = async (req: NextApiRequest): Promise<ApiUser | null> => {
+  const session = await getSession({ req })
+  return getUserByIdWithoutPassword((session?.user as any)?.id ?? -1)
+}
+
+export const getUserFromRequestOrThrow = async (req: NextApiRequest): Promise<ApiUser> => {
+  const user = await getUserFromRequest(req)
+
+  if (!user) {
+    throw new ApiError(401, 'Please Log In')
+  }
+
+  return user
 }

@@ -1,3 +1,4 @@
+import { signout } from 'next-auth/client'
 import { queryClient } from './query.client'
 
 type ApiOptions = {
@@ -19,6 +20,7 @@ const api = async <TResult = Record<string, any>>(
 
   if (response.status === 401) {
     queryClient.clear()
+    signout({ callbackUrl: '/login' })
     return Promise.reject({ message: 'Please Login' })
   }
 

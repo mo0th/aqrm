@@ -11,6 +11,7 @@ module.exports = {
     extend: {
       colors: {
         primary: colors.purple,
+        ...colors,
       },
       fontFamily: {
         sans: ['Inter', 'serif', ...defaultTheme.fontFamily.sans],

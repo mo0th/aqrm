@@ -1,19 +1,16 @@
-import Button from '@/components/ui/Button'
-import { useMe } from '@/lib/auth.client'
-import { signout } from 'next-auth/client'
+import Title from '@/components/shared/Title'
+import MainLayout from '@/components/layouts/MainLayout'
+import SitesSection from '@/components/dashboard/SitesSection'
 
 const HomePage: React.FC = () => {
-  const { data } = useMe()
   return (
-    <>
-      {data?.user && (
-        <Button variant="primary" onClick={() => signout()}>
-          Logout
-        </Button>
-      )}
-      <pre>{JSON.stringify(data, null, 2)}</pre>
-    </>
+    <MainLayout>
+      <Title text="Dashboard" />
+      <SitesSection />
+    </MainLayout>
   )
 }
+
+export const layout = 'hello'
 
 export default HomePage

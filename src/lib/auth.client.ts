@@ -3,18 +3,19 @@ import { signout } from 'next-auth/client'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { api } from './api.client'
 
+type TSignupInput = { name: string; email: string; password: string }
+
 export const useSignup = () => {
   const queryClient = useQueryClient()
 
-  return useMutation<
-    { success: true },
-    { issues: Record<string, string> },
-    { name: string; email: string; password: string }
-  >(vars => api('/api/auth/signup', { method: 'POST', data: vars }), {
-    onSuccess: () => {
-      queryClient.clear()
-    },
-  })
+  return useMutation<{ success: true }, { issues: Partial<TSignupInput> }, TSignupInput>(
+    vars => api('/api/auth/signup', { method: 'POST', data: vars }),
+    {
+      onSuccess: () => {
+        queryClient.clear()
+      },
+    }
+  )
 }
 
 export const useLogout = () => {

@@ -1,4 +1,5 @@
 import type { FormEventHandler } from 'react'
+import type { GetServerSideProps } from 'next'
 import CenteredCardLayout from '@/components/layouts/CenteredCardLayout'
 import InputField from '@/components/ui/InputField'
 import Button from '@/components/ui/Button'
@@ -6,7 +7,7 @@ import Link from '@/components/ui/Link'
 import { useSignup } from '@/lib/auth.client'
 import { getFormFields } from '@/lib/forms.client'
 import { getSession } from 'next-auth/client'
-import type { GetServerSideProps } from 'next'
+import Alert from '@/components/ui/Alert'
 
 interface SignupPageProps {}
 
@@ -16,16 +17,24 @@ const SignupPage: React.FC<SignupPageProps> = () => {
   const handleSignup: FormEventHandler<HTMLFormElement> = async event => {
     event.preventDefault()
 
-    const body = getFormFields<{ name: string; email: string; password: string }>(
-      event.currentTarget
-    )
+    const form = event.currentTarget
+
+    const body = getFormFields<{ name: string; email: string; password: string }>(form)
 
     await signup.mutateAsync(body)
+    form.reset()
   }
 
   return (
     <CenteredCardLayout>
       <h1 className="mb-8 text-4xl font-bold text-center">Signup</h1>
+      {signup && (
+        <div className="mb-6">
+          <Alert variant="success">
+            You can now <Link href="/login">log in</Link>!
+          </Alert>
+        </div>
+      )}
       <form className="space-y-6" onSubmit={handleSignup}>
         <InputField
           label="Name"

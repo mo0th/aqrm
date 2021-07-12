@@ -4,6 +4,10 @@ import { ApiError } from './error.server'
 
 export const createApiHandler = (handler: NextApiHandler): NextApiHandler => {
   return async (req, res) => {
+    if (process.env.NODE_ENV !== 'production') {
+      console.log(`${req.method} ${req.url}`)
+    }
+
     try {
       await handler(req, res)
     } catch (err) {
@@ -29,6 +33,9 @@ export const createApiHandler = (handler: NextApiHandler): NextApiHandler => {
         })
       }
     } finally {
+      if (!res.headersSent) {
+        res.status(404).json({ message: 'Not Found' })
+      }
       res.end()
     }
   }

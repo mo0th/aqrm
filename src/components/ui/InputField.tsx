@@ -24,6 +24,7 @@ const InputField: React.FC<InputFieldProps> = ({ label, id, name, error, require
         aria-describedby={errorId}
         aria-invalid={!!error}
         className={clsx('block w-full form-input', isError && '!border-red-600')}
+        required={required}
         id={id}
         name={name}
         {...rest}

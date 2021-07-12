@@ -14,8 +14,18 @@ const base = {
 
 export const variants = {
   primary: {
-    DEFAULT: 'bg-purple-600 text-white',
-    ACTIVE: 'hover:bg-purple-500 transition focus:ring focus:ring-purple-300',
+    DEFAULT: 'bg-primary-600 text-white',
+    ACTIVE: 'hover:bg-primary-500 transition focus:ring focus:ring-primary-300',
+    DISABLED: 'opacity-40',
+  },
+  muted: {
+    DEFAULT: 'bg-gray-200 text-gray-700',
+    ACTIVE: 'hover:bg-gray-300 transition focus:ring focus:ring-primary-300',
+    DISABLED: 'opacity-40',
+  },
+  delete: {
+    DEFAULT: 'bg-red-600 text-white',
+    ACTIVE: 'hover:bg-red-500 transition focus:ring focus:ring-primary-300',
     DISABLED: 'opacity-40',
   },
 }

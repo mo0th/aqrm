@@ -22,7 +22,7 @@ class MyDocument extends NextDocument {
             crossOrigin="anonymous"
           />
         </Head>
-        <body className="h-full min-h-screen bg-gray-100">
+        <body className="h-full min-h-screen text-black bg-gray-100">
           <Main />
           <NextScript />
         </body>
