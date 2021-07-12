@@ -45,10 +45,11 @@ enum FeedbackType {
 }
 
 model Feedback {
-  id        String   @id @default(uuid())
+  id        String       @id @default(uuid())
+  type      FeedbackType
   text      String
-  site      Site     @relation(fields: [siteId], references: [id])
+  site      Site         @relation(fields: [siteId], references: [id])
   siteId    String
-  createdAt DateTime @default(now())
-  userId    String
+  createdAt DateTime     @default(now())
+  userId    String?
 }

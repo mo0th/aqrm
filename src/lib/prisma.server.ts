@@ -15,3 +15,5 @@ if (process.env.NODE_ENV === 'production') {
 export default prisma
 
 export { prisma }
+export type { Site, Feedback, User, UserRole } from '@prisma/client'
+export { FeedbackType } from '@prisma/client'

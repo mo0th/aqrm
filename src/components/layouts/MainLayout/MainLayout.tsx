@@ -41,7 +41,7 @@ const MainLayout: React.FC = ({ children }) => {
           )}
         </nav>
       </header>
-      <main className="container">{children}</main>
+      <main className="container flex-1 pb-24">{children}</main>
     </>
   )
 }

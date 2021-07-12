@@ -1,3 +1,4 @@
+import type { ApiRequestError } from '@/types'
 import type { Site } from '@prisma/client'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { api } from './api.client'
@@ -31,7 +32,7 @@ export const useCreateSite = () => {
 }
 
 export const useSite = (siteName?: string) => {
-  return useQuery<Site, { message: string }>(['sites', siteName], {
+  return useQuery<Site, ApiRequestError>(['sites', siteName], {
     queryFn: () => api(`/api/sites/${siteName}`),
     enabled: typeof siteName === 'string',
   })
@@ -39,7 +40,7 @@ export const useSite = (siteName?: string) => {
 
 export const useDeleteSite = (siteName: string) => {
   const queryClient = useQueryClient()
-  return useMutation<{ success: true }, { message: string }, void, void>(
+  return useMutation<{ success: true }, ApiRequestError, void, void>(
     () => api(`/api/sites/${siteName}`, { method: 'DELETE' }),
     {
       onSuccess: () => {
