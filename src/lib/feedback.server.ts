@@ -6,8 +6,11 @@ import { ApiError } from './error.server'
 import prisma from './prisma.server'
 
 export const feedbackBodySchema = z.object({
-  site: z.string(),
-  text: z.string().min(1),
+  site: z.string().min(3),
+  text: z
+    .string()
+    .min(1)
+    .transform(s => s.trim()),
   userId: z.string().optional(),
   type: z.nativeEnum(FeedbackType),
 })

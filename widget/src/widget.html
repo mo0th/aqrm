@@ -1,0 +1,139 @@
+<div data-aqrm-widget style="display: none" state="select-type">
+  <!-- Icons -->
+  <svg class="aqrm-defs">
+    <defs>
+      <g
+        id="aqrm-icon-issue"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        fill="var(--issue-1)"
+        stroke="var(--issue-2)"
+      >
+        <path
+          d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"
+        ></path>
+        <line x1="12" y1="9" x2="12" y2="13"></line>
+        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+      </g>
+      <g
+        id="aqrm-icon-idea"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        fill="var(--idea-1)"
+        stroke="var(--idea-2)"
+      >
+        <path d="M3 12h1m8 -9v1m8 8h1m-15.4 -6.4l.7 .7m12.1 -.7l-.7 .7" />
+        <path d="M9 16a5 5 0 1 1 6 0a3.5 3.5 0 0 0 -1 3a2 2 0 0 1 -4 0a3.5 3.5 0 0 0 -1 -3" />
+        <line x1="9.7" y1="17" x2="14.3" y2="17" />
+      </g>
+      <g id="aqrm-icon-other">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          stroke="var(--other-1)"
+          d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
+        />
+      </g>
+      <g id="aqrm-icon-back">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M11 17l-5-5m0 0l5-5m-5 5h12"
+        />
+      </g>
+      <g id="aqrm-icon-close">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M6 18L18 6M6 6l12 12"
+        />
+      </g>
+      <g id="aqrm-icon-success">
+        <circle cx="12" cy="12" r="12" fill="var(--success-1)" stroke="none" />
+        <path
+          fill="none"
+          stroke="var(--success-2)"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M6 14l3 3L18 8"
+        />
+      </g>
+    </defs>
+  </svg>
+
+  <form>
+    <header>
+      <button
+        type="button"
+        class="aqrm-btn-sm aqrm-br-sm"
+        id="aqrm-btn-back"
+        aria-label="Back to Feedback Select"
+      >
+        <svg stroke="currentColor" width="24" height="24" viewBox="0 0 24 24">
+          <use href="#aqrm-icon-back" />
+        </svg>
+      </button>
+      <h1 class="aqrm-heading">What&apos;s on your mind?</h1>
+      <button
+        type="button"
+        class="aqrm-btn-sm aqrm-br-sm"
+        id="aqrm-btn-close"
+        aria-label="Back to Feedback Select"
+      >
+        <svg stroke="currentColor" width="24" height="24" viewBox="0 0 24 24">
+          <use href="#aqrm-icon-close" />
+        </svg>
+      </button>
+    </header>
+    <div class="aqrm-select-type">
+      <button type="button" class="aqrm-br-md aqrm-btn-lg" aria-label="issue">
+        <svg viewBox="0 0 24 24">
+          <use href="#aqrm-icon-issue" />
+        </svg>
+        <span>Issue</span>
+      </button>
+      <button type="button" class="aqrm-br-md aqrm-btn-lg" aria-label="idea">
+        <svg viewBox="0 0 24 24">
+          <use href="#aqrm-icon-idea" />
+        </svg>
+        <span>Idea</span>
+      </button>
+      <button type="button" class="aqrm-br-md aqrm-btn-lg" aria-label="other">
+        <svg viewBox="0 0 24 24">
+          <use href="#aqrm-icon-other" />
+        </svg>
+        <span>Other</span>
+      </button>
+    </div>
+    <div class="aqrm-success">
+      <svg width="48" height="48" viewBox="0 0 24 24"><use href="#aqrm-icon-success" /></svg>
+      <p>Thanks! We received your feedback.</p>
+      <button class="aqrm-br-md aqrm-btn-sm" type="button">Submit more feedback</button>
+    </div>
+    <input type="hidden" name="type" value="" />
+    <input type="hidden" name="site" value="" />
+    <input type="hidden" name="userId" value="" />
+    <textarea
+      class="aqrm-br-md"
+      id="text"
+      name="text"
+      rows="3"
+      placeholder="Stuff happened..."
+    ></textarea>
+    <div class="aqrm-form-actions">
+      <button type="submit" class="aqrm-btn-md aqrm-br-md" disabled>
+        <span class="aqrm-btn-text">Send Feedback</span>
+        <span class="aqrm-btn-spinner"></span>
+      </button>
+    </div>
+    <footer>
+      Widget by&nbsp;<a href="https://mooth.tech" target="_blank" rel="noopener">mooth</a>
+    </footer>
+  </form>
+</div>

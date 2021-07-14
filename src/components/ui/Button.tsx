@@ -7,7 +7,7 @@ export const sizes = {
 }
 
 const base = {
-  DEFAULT: 'focus:outline-none relative inline-flex',
+  DEFAULT: 'focus:outline-none relative inline-flex justify-center',
   ACTIVE: '',
   DISABLED: 'cursor-not-allowed',
 }
