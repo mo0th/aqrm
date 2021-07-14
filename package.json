@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "postbuild": "cd widget && yarn build",
+    "postinstall": "cd widget && yarn",
     "start": "next start",
     "export": "next export",
     "lint": "eslint ./**/*.{ts,tsx,js}",
