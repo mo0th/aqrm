@@ -28,7 +28,7 @@ const SignupPage: React.FC<SignupPageProps> = () => {
   return (
     <CenteredCardLayout>
       <h1 className="mb-8 text-4xl font-bold text-center">Signup</h1>
-      {signup && (
+      {signup.status === 'success' && (
         <div className="mb-6">
           <Alert variant="success">
             You can now <Link href="/login">log in</Link>!
