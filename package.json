@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "postbuild": "cd widget && yarn build",
     "start": "next start",
     "export": "next export",
     "lint": "eslint ./**/*.{ts,tsx,js}",
