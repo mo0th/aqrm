@@ -71,7 +71,7 @@ const WidgetTestPage: React.FC<WidgetTestPageProps> = () => {
   return (
     <MainLayout>
       <Head>
-        <script src="http://localhost:3000/aqrm.js?s=lol" defer />
+        <script src={`${process.env.NEXT_PUBLIC_BASE_URL}/aqrm.js?s=lol`} defer />
       </Head>
       <Title text="Theme Editor" />
       <h1 className="mb-8 text-4xl font-bold">Widget Theme Editor</h1>
