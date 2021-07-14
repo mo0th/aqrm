@@ -11,11 +11,11 @@ const config: NextAuthOptions = {
   },
   providers: [
     Providers.Credentials({
-      credentials: [
-        { label: 'Email', type: 'email' },
-        { label: 'Password', type: 'password' },
-      ],
-      authorize({ email, password }: { email: string; password: string }) {
+      credentials: {
+        email: { label: 'Email', type: 'email' },
+        password: { label: 'Password', type: 'password' },
+      },
+      authorize({ email, password }) {
         return auth.loginUser(email, password)
       },
     }),
