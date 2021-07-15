@@ -1,4 +1,5 @@
-[data-aqrm-widget] {
+[data-widget] {
+  font-family: sans-serif;
   & * {
     box-sizing: border-box;
   }
@@ -13,15 +14,10 @@
     background-color: transparent;
     background-image: none;
     border: none;
-  }
-
-  & button:focus {
-    outline: none;
-  }
-
-  & button,
-  & [role='button'] {
     cursor: pointer;
+    &:focus {
+      outline: none;
+    }
   }
 
   & h1 {
@@ -43,7 +39,6 @@
 
   & svg {
     display: block;
-    vertical-align: middle;
   }
 
   /* Variables */
@@ -68,7 +63,7 @@
   background: white;
   border-radius: 16px;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  z-index: 99999;
+  z-index: 999;
 
   & textarea {
     width: 100%;
@@ -101,10 +96,6 @@
 
   & .aqrm-br-md {
     border-radius: 8px;
-  }
-
-  & .w-full {
-    width: 100%;
   }
 
   & button.aqrm-btn-md {
@@ -183,8 +174,7 @@
   }
 
   & .aqrm-defs {
-    width: 0;
-    height: 0;
+    display: none;
   }
 
   & form {
@@ -208,10 +198,6 @@
     & > * + * {
       margin-left: 4px;
     }
-  }
-
-  & a:hover {
-    text-decoration: underline;
   }
 
   & .aqrm-select-type {
@@ -288,11 +274,6 @@
     & .aqrm-heading {
       display: none;
     }
-  }
-
-  & #arqm-icon-issue path {
-    fill: var(--issue-1);
-    stroke: var(--issue-2);
   }
 }
 

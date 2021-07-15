@@ -52,8 +52,10 @@ const main = async () => {
   const widgetHtml = await processHtml()
   const script = await processScript({ css, widgetHtml })
 
-  console.log(`Bytes: ${script.length}`)
-  // console.log(script)
+  console.log(`CSS   : ${css.length}`)
+  console.log(`HTML  : ${widgetHtml.length}`)
+  console.log(`JS    : ${script.length - css.length - widgetHtml.length}`)
+  console.log(`Bundle: ${script.length}`)
 
   if (!existsSync(path.join(process.cwd(), 'dist'))) {
     fs.mkdir(path.join(process.cwd(), 'dist'))

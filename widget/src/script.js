@@ -1,43 +1,45 @@
-;(function () {
-  const BASE_URL = window._AQRM_BASE_URL
-
-  const style = document.createElement('style')
+;(() => {
+  let style = document.createElement('style')
   style.innerHTML = `{{{css}}}`
   document.head.appendChild(style)
 
-  const trigger = document.querySelector('[data-aqrm]')
+  let trigger = document.querySelector('[data-aqrm]')
 
-  const registerWidget = (parent, trigger, isSticky) => {
-    const container = document.createElement('div')
+  let registerWidget = (parent, trigger, isSticky) => {
+    let container = document.createElement('div')
     container.innerHTML = `{{{widgetHtml}}}`
     parent.appendChild(container)
 
-    const widget = container.querySelector('[data-aqrm-widget]')
-    const form = widget.querySelector('form')
-    const textarea = widget.querySelector('textarea')
-    const submitBtn = widget.querySelector('[type=submit]')
-    const heading = widget.querySelector('h1')
-    const typeInput = widget.querySelector('input[name=type]')
-    const siteInput = widget.querySelector('input[name=site]')
-    const userInput = widget.querySelector('input[name=userId]')
+    let widget = container.firstElementChild
+    let form = widget.querySelector('form')
+    let textarea = widget.querySelector('textarea')
+    let submitBtn = widget.querySelector('[type=submit]')
+    let heading = widget.querySelector('h1')
+    let typeInput = widget.querySelector('[name=type]')
+    let siteInput = widget.querySelector('[name=site]')
+    let userInput = widget.querySelector('[name=userId]')
 
     siteInput.value = window._AQRM_SITE_NAME
     userInput.value = trigger.getAttribute('data-aqrm-user-id')
 
-    const setState = state => {
+    let setState = state => {
       if (state === 'select-type') heading.innerText = "What's on your mind?"
+      if (state === 'input') {
+        textarea.value = ''
+        submitBtn.disabled = true
+      }
       widget.setAttribute('state', state)
     }
 
-    const reposition = () => {
-      const widgetRect = widget.getBoundingClientRect()
+    let reposition = () => {
+      let widgetRect = widget.getBoundingClientRect()
       let top = 16
       let left = 16
 
-      const triggerRect = trigger.getBoundingClientRect()
+      let triggerRect = trigger.getBoundingClientRect()
 
-      const positionBelow = triggerRect.top + triggerRect.height + 16
-      const positionAbove = triggerRect.top - widgetRect.height - 16
+      let positionBelow = triggerRect.top + triggerRect.height + 16
+      let positionAbove = triggerRect.top - widgetRect.height - 16
 
       if (positionAbove >= 0) {
         top = positionAbove
@@ -45,8 +47,8 @@
         top = positionBelow
       }
 
-      const triggerCenter = triggerRect.left + triggerRect.width / 2
-      const positionCentered = triggerCenter - widgetRect.width / 2
+      let triggerCenter = triggerRect.left + triggerRect.width / 2
+      let positionCentered = triggerCenter - widgetRect.width / 2
 
       left = Math.min(Math.max(16, positionCentered), window.innerWidth)
 
@@ -54,7 +56,7 @@
       widget.style.left = `${left}px`
     }
 
-    const showWidget = () => {
+    let showWidget = () => {
       widget.style.display = 'block'
       widget.focus()
       reposition()
@@ -62,7 +64,7 @@
       window.addEventListener('resize', reposition)
     }
 
-    const hideWidget = () => {
+    let hideWidget = () => {
       if (isSticky) {
         setState('select-type')
       } else {
@@ -73,7 +75,7 @@
       }
     }
 
-    const triggerHandler = () => {
+    let triggerHandler = () => {
       if (widget.style.display === 'block') {
         hideWidget()
       } else {
@@ -88,20 +90,17 @@
       submitBtn.setAttribute('loading', true)
       textarea.disabled = true
       submitBtn.disabled = true
-      const data = Object.fromEntries(new FormData(form))
+      let data = Object.fromEntries(new FormData(form))
       data.text = textarea.value
       try {
-        await fetch(`${BASE_URL}/api/feedback`, {
+        await fetch(`${window._AQRM_BASE_URL}/api/feedback`, {
           method: 'POST',
           body: JSON.stringify(data),
           headers: { 'Content-Type': 'application/json' },
         })
-      } catch (err) {
-        console.log(err)
       } finally {
         submitBtn.removeAttribute('loading')
         textarea.disabled = false
-        submitBtn.disabled = false
         form.reset()
         setState('success')
       }
@@ -113,9 +112,6 @@
     })
 
     widget.querySelector('#aqrm-btn-back').addEventListener('click', () => {
-      heading.innerText = "What's on your mind?"
-
-      submitBtn.disabled = true
       setState('select-type')
     })
 
@@ -128,11 +124,11 @@
     })
 
     widget.querySelector('.aqrm-select-type').addEventListener('click', e => {
-      const btn = e.target.closest('button')
+      let btn = e.target.closest('button')
 
       if (!btn) return
 
-      const type = btn.getAttribute('aria-label')
+      let type = btn.getAttribute('aria-label')
 
       textarea.placeholder = {
         issue: 'I noticed that...',
@@ -148,7 +144,7 @@
 
       typeInput.value = type.toUpperCase()
 
-      setState(`input-${type}`)
+      setState('input')
       textarea.focus()
     })
 
@@ -162,6 +158,6 @@
     return widget
   }
 
-  if (trigger) registerWidget(document.body, trigger, trigger.dataset.aqrm === 'sticky')
+  if (trigger) registerWidget(document.body, trigger)
   window._AQRM_REGISTER = registerWidget
 })()
