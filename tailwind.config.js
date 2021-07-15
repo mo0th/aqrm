@@ -14,7 +14,7 @@ module.exports = {
         ...colors,
       },
       fontFamily: {
-        sans: ['Inter', 'serif', ...defaultTheme.fontFamily.sans],
+        sans: ['Inter', ...defaultTheme.fontFamily.sans],
       },
       animation: {
         'spin-fast': 'spin 0.5s linear infinite',
