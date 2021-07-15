@@ -35,8 +35,6 @@
 
   & button,
   & input,
-  & optgroup,
-  & select,
   & textarea {
     padding: 0;
     line-height: inherit;
@@ -88,6 +86,7 @@
   & textarea {
     transition: all 150ms ease-in-out;
     font-size: 14px;
+    height: 83px;
   }
 
   & button:focus,
