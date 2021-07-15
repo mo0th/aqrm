@@ -87,7 +87,6 @@
   & textarea {
     transition: all 150ms ease-in-out;
     font-size: 14px;
-    height: 80px;
   }
 
   & button:focus,
