@@ -1,16 +1,16 @@
 [data-aqrm-widget] {
-  > h1,
-  > p,
-  > pre {
+  & h1,
+  & p,
+  & pre {
     margin: 0;
   }
 
-  > button {
+  & button {
     background-color: transparent;
     background-image: none;
   }
 
-  > button:focus {
+  & button:focus {
     outline: 1px dotted;
     outline: 5px auto -webkit-focus-ring-color;
   }
@@ -20,28 +20,28 @@
     'Segoe UI Symbol', 'Noto Color Emoji';
   line-height: 1.5; /* 2 */
 
-  > * {
+  & * {
     box-sizing: border-box; /* 1 */
   }
 
-  > button,
-  > [role='button'] {
+  & button,
+  & [role='button'] {
     cursor: pointer;
   }
 
-  > h1 {
+  & h1 {
     font-size: inherit;
     font-weight: inherit;
   }
 
-  > a {
+  & a {
     color: inherit;
     text-decoration: inherit;
   }
 
-  > button,
-  > input,
-  > textarea {
+  & button,
+  & input,
+  & textarea {
     padding: 0;
     line-height: inherit;
     color: inherit;
