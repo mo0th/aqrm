@@ -1,4 +1,8 @@
 [data-aqrm-widget] {
+  & * {
+    box-sizing: border-box;
+  }
+
   & h1,
   & p,
   & pre {
@@ -13,10 +17,6 @@
 
   & button:focus {
     outline: none;
-  }
-
-  & * {
-    box-sizing: border-box;
   }
 
   & button,
@@ -249,17 +249,8 @@
     }
   }
 
-  @keyframes spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
   & .aqrm-btn-spinner {
-    animation: spin 0.5s linear infinite;
+    animation: aqrm-spin 0.5s linear infinite;
     width: 1em;
     height: 1em;
     border-radius: 0.5em;
@@ -301,5 +292,14 @@
   & #arqm-icon-issue path {
     fill: var(--issue-1);
     stroke: var(--issue-2);
+  }
+}
+
+@keyframes aqrm-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }
