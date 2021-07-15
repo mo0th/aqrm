@@ -4,8 +4,6 @@ import Button from '@/components/ui/Button'
 import Head from 'next/head'
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
 
-interface WidgetTestPageProps {}
-
 const DEFAULT_COLORS = {
   primary: '#a78bfa',
   'primary-dark': '#8b5cf6',
@@ -22,7 +20,7 @@ const DEFAULT_COLORS = {
   'success-2': '#ffffff',
 }
 
-const WidgetTestPage: React.FC<WidgetTestPageProps> = () => {
+const WidgetTestPage: React.FC = () => {
   const [colors, setColors] = useState(DEFAULT_COLORS)
   const [showCss, setShowCss] = useState(false)
   const [copied, setCopied] = useState(false)
