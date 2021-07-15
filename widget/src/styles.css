@@ -76,6 +76,7 @@
     border: 2px solid var(--base);
     resize: none;
     display: none;
+    flex: 1;
 
     &:focus {
       border-color: var(--primary-dark);
