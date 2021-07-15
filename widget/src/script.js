@@ -1,42 +1,49 @@
 ;(() => {
-  let style = document.createElement('style')
+  let createElement = tag => document.createElement(tag)
+
+  let selectTypeStatus = 't'
+
+  let style = createElement('style')
   style.innerHTML = `{{{css}}}`
   document.head.appendChild(style)
 
-  let trigger = document.querySelector('[data-aqrm]')
-
   let registerWidget = (parent, trigger, isSticky) => {
-    let container = document.createElement('div')
+    let container = createElement('div')
     container.innerHTML = `{{{widgetHtml}}}`
     parent.appendChild(container)
 
     let widget = container.firstElementChild
-    let form = widget.querySelector('form')
-    let textarea = widget.querySelector('textarea')
-    let submitBtn = widget.querySelector('[type=submit]')
-    let heading = widget.querySelector('h1')
-    let typeInput = widget.querySelector('[name=type]')
-    let siteInput = widget.querySelector('[name=site]')
-    let userInput = widget.querySelector('[name=userId]')
+    let widgetQuerySelector = selector => widget.querySelector(selector)
+    /** @type {HTMLFormElement} */
+    let form = widgetQuerySelector('form')
+    /** @type {HTMLTextAreaElement} */
+    let textarea = widgetQuerySelector('textarea')
+    /** @type {HTMLButtonElement} */
+    let submitBtn = widgetQuerySelector('[type=submit]')
+    /** @type {HTMLHeadingElement} */
+    let heading = widgetQuerySelector('h1')
+    /** @type {HTMLInputElement} */
+    let typeInput = widgetQuerySelector('[name=type]')
 
-    siteInput.value = window._AQRM_SITE_NAME
-    userInput.value = trigger.getAttribute('data-aqrm-user-id')
+    widgetQuerySelector('[name=site]').value = window._AQRM_SITE_NAME
+    widgetQuerySelector('[name=userId]').value = trigger.getAttribute('data-aqrm-user-id')
 
     let setState = state => {
-      if (state === 'select-type') heading.innerText = "What's on your mind?"
-      if (state === 'input') {
+      if (state === selectTypeStatus) heading.innerText = "What's on your mind?"
+      if (state === 'i') {
         textarea.value = ''
         submitBtn.disabled = true
       }
-      widget.setAttribute('state', state)
+      widget.setAttribute('s', state)
     }
 
     let reposition = () => {
-      let widgetRect = widget.getBoundingClientRect()
+      let getRect = e => e.getBoundingClientRect()
+      let widgetRect = getRect(widget)
       let top = 16
       let left = 16
 
-      let triggerRect = trigger.getBoundingClientRect()
+      let triggerRect = getRect(trigger)
 
       let positionBelow = triggerRect.top + triggerRect.height + 16
       let positionAbove = triggerRect.top - widgetRect.height - 16
@@ -66,7 +73,7 @@
 
     let hideWidget = () => {
       if (isSticky) {
-        setState('select-type')
+        setState(selectTypeStatus)
       } else {
         widget.style.display = 'none'
         trigger.focus()
@@ -85,7 +92,7 @@
 
     trigger.addEventListener('click', triggerHandler)
 
-    form.addEventListener('submit', async e => {
+    form.onsubmit = async e => {
       e.preventDefault()
       submitBtn.setAttribute('loading', true)
       textarea.disabled = true
@@ -102,28 +109,26 @@
         submitBtn.removeAttribute('loading')
         textarea.disabled = false
         form.reset()
-        setState('success')
+        setState('s')
       }
-    })
+    }
 
-    widget.querySelector('#aqrm-btn-close').addEventListener('click', () => {
+    widgetQuerySelector('#aqrm-btn-close').onclick = _ => {
       if (!isSticky) hideWidget()
-      setState('select-type')
-    })
+      setState(selectTypeStatus)
+    }
 
-    widget.querySelector('#aqrm-btn-back').addEventListener('click', () => {
-      setState('select-type')
-    })
+    widgetQuerySelector('#aqrm-btn-back').onclick = _ => {
+      setState(selectTypeStatus)
+    }
 
-    textarea.addEventListener('input', () => {
+    textarea.oninput = _ => {
       submitBtn.disabled = !textarea.value
-    })
+    }
 
-    widget.querySelector('.aqrm-success button').addEventListener('click', () => {
-      setState('select-type')
-    })
+    widgetQuerySelector('.aqrm-success button').onclick = _ => setState(selectTypeStatus)
 
-    widget.querySelector('.aqrm-select-type').addEventListener('click', e => {
+    widgetQuerySelector('.aqrm-select-type').onclick = e => {
       let btn = e.target.closest('button')
 
       if (!btn) return
@@ -144,9 +149,9 @@
 
       typeInput.value = type.toUpperCase()
 
-      setState('input')
+      setState('i')
       textarea.focus()
-    })
+    }
 
     if (isSticky) showWidget()
 
@@ -158,6 +163,7 @@
     return widget
   }
 
+  let trigger = document.querySelector('[data-aqrm]')
   if (trigger) registerWidget(document.body, trigger)
   window._AQRM_REGISTER = registerWidget
 })()

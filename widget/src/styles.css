@@ -246,7 +246,7 @@
     border-right-color: var(--base-dark);
   }
 
-  &[state='select-type'] {
+  &[s='t'] {
     & .aqrm-select-type {
       display: flex;
     }
@@ -255,8 +255,8 @@
     }
   }
 
-  &[state^='input'] {
-    & textarea {
+  &[s^='i'] {
+    & #text {
       display: block;
     }
     & .aqrm-form-actions {
@@ -264,7 +264,7 @@
     }
   }
 
-  &[state='success'] {
+  &[s='s'] {
     & .aqrm-success {
       display: flex;
     }

@@ -78,7 +78,7 @@ const WidgetTestPage: React.FC = () => {
           <div className="space-y-4">
             {Object.entries(colors).map(([name, value]) => (
               <Fragment key={name}>
-                <label className="flex items-center pl-1 space-x-4" htmlFor={name}>
+                <label className="flex items-center pl-1 space-x-4 cursor-pointer" htmlFor={name}>
                   <div style={{ background: value }} className="w-8 h-8 outline-black" />
                   <div>{name}</div>
                 </label>

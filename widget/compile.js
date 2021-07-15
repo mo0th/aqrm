@@ -37,6 +37,7 @@ const processScript = async vars => {
   const text = await getSourceFile('script.js')
   const template = hbs.compile(text)
   const hydratedTemplate = template(vars)
+  // return hydratedTemplate
   const minified = await minify(hydratedTemplate, { ecma: '2015' })
   return minified.code
 }
