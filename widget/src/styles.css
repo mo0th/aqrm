@@ -86,7 +86,7 @@
   & textarea {
     transition: all 150ms ease-in-out;
     font-size: 14px;
-    height: 83px;
+    height: 80px;
   }
 
   & button:focus,
@@ -110,6 +110,7 @@
   & button.aqrm-btn-md {
     padding: 4px 10px;
     width: 100%;
+    height: 32px;
     background: var(--primary-dark);
     color: var(--primary-contrast);
     position: relative;
@@ -137,6 +138,7 @@
     justify-content: center;
     align-items: center;
     background: var(--base);
+    height: 100%;
 
     &:hover {
       background: var(--base-dark);
