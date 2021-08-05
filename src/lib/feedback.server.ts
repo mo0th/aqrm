@@ -49,11 +49,16 @@ export const createFeedback = async (
   }
 }
 
-export const getFeedbackForSite = async (user: ApiUser, siteName: string): Promise<Feedback[]> => {
+export const getFeedbackForSite = async (
+  user: ApiUser | null,
+  siteName: string
+): Promise<Feedback[]> => {
+  const siteAccessQuery = user ? [{ isPublic: true }, { ownerId: user.id }] : { isPublic: true }
+
   return prisma.feedback.findMany({
     where: {
       site: {
-        AND: [{ name: siteName }, { OR: [{ isPublic: true }, { ownerId: user.id }] }],
+        AND: [{ name: siteName }, { OR: siteAccessQuery }],
       },
     },
     orderBy: {
