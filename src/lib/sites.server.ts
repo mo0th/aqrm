@@ -7,7 +7,10 @@ import { prisma } from '@/lib/prisma.server'
 import { ApiError } from './error.server'
 
 export const getSitesByUser = async (user: ApiUser): Promise<Site[]> => {
-  return prisma.site.findMany({ where: { ownerId: user.id } })
+  return prisma.site.findMany({
+    where: { ownerId: user.id },
+    orderBy: { name: 'asc' },
+  })
 }
 
 export const getSiteByName = (name: string): Promise<Site | null> => {
