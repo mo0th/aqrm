@@ -12,7 +12,10 @@ const CreateSiteTile: React.FC = () => {
   const createSite = useCreateSite()
 
   const handleClose = () => {
+    if (createSite.isLoading) return
+
     setShowModal(false)
+    createSite.reset()
   }
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async event => {
@@ -30,6 +33,7 @@ const CreateSiteTile: React.FC = () => {
       <button
         onClick={() => setShowModal(true)}
         className="flex items-center p-4 space-x-4 text-lg transition bg-gray-200 border-2 border-dashed rounded text-primary-700 border-primary-400 hover:shadow-lg hover:border-primary-600 hover:bg-gray-300"
+        disabled={showModal}
       >
         <PlusIcon className="block w-5 h-5" />
         <span>Create new Site</span>

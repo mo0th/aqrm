@@ -44,13 +44,28 @@ export const useDeleteSite = (siteName: string) => {
     () => api(`/api/sites/${siteName}`, { method: 'DELETE' }),
     {
       onSuccess: () => {
-        queryClient.setQueryData('sites', (existing: Site[] | undefined) =>
+        queryClient.setQueryData<Site[]>('sites', existing =>
           existing ? existing.filter(s => s.name !== siteName) : []
         )
         queryClient.setQueryData(['sites', siteName], null)
       },
       onSettled: () => {
         queryClient.invalidateQueries('sites')
+      },
+    }
+  )
+}
+
+export const useEditSite = (siteName: string) => {
+  const queryClient = useQueryClient()
+  return useMutation<Site, ApiRequestError, Partial<Pick<Site, 'isPublic' | 'allowFeedback'>>>(
+    vars => api(`/api/sites/${siteName}`, { method: 'PATCH', data: vars }),
+    {
+      onMutate: vars => {
+        queryClient.setQueryData<Site>(['sites', siteName], site => ({ ...site, ...vars } as any))
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries(['sites', siteName])
       },
     }
   )

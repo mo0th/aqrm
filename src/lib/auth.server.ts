@@ -81,12 +81,16 @@ export const getUserFromRequest = async (req: NextApiRequest): Promise<ApiUser |
   return getUserByIdWithoutPassword((session?.user as any)?.id ?? -1)
 }
 
-export const getUserFromRequestOrThrow = async (req: NextApiRequest): Promise<ApiUser> => {
-  const user = await getUserFromRequest(req)
-
+export const userGuard = (user: ApiUser | null): ApiUser => {
   if (!user) {
     throw new ApiError(401, 'Please Log In')
   }
 
   return user
+}
+
+export const getUserFromRequestOrThrow = async (req: NextApiRequest): Promise<ApiUser> => {
+  const user = await getUserFromRequest(req)
+
+  return userGuard(user)
 }

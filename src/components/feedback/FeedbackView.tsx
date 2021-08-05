@@ -34,6 +34,11 @@ const FeedbackView: React.FC<FeedbackViewProps> = ({ siteName }) => {
               <p>{feedbackItem.text}</p>
             </div>
           ))}
+          {data?.length === 0 && (
+            <div className="py-24 text-center col-span-full">
+              This site hasn&apos;t received any feedback yet.
+            </div>
+          )}
         </div>
       )}
     </section>

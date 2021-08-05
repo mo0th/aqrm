@@ -1,5 +1,6 @@
 import type { Site } from '@prisma/client'
 import FeedbackView from '../feedback/FeedbackView'
+import SiteSettings from './SiteSettings'
 
 interface SiteViewProps {
   site: Site
@@ -10,6 +11,7 @@ const SiteView: React.FC<SiteViewProps> = ({ site }) => {
     <div>
       <h1 className="mb-8 text-4xl font-bold">{site.name}</h1>
       <FeedbackView siteName={site.name} />
+      <SiteSettings site={site} />
     </div>
   )
 }
