@@ -46,4 +46,6 @@ const MainLayout: React.FC = ({ children }) => {
   )
 }
 
+export const getLayout: GetLayout = page => <MainLayout>{page}</MainLayout>
+
 export default MainLayout

@@ -8,7 +8,11 @@ import { queryClient } from '@/lib/query.client'
 
 import '../styles/globals.css'
 
+const defaultGetLayout: GetLayout = page => <>{page}</>
+
 const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
+  const getLayout = (Component as any).getLayout || defaultGetLayout
+
   return (
     <>
       <Head>
@@ -17,7 +21,7 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
       <QueryClientProvider client={queryClient}>
         <Hydrate state={pageProps.dehydratedState}>
           <SessionProvider session={pageProps.session}>
-            <Component {...pageProps} />
+            {getLayout(<Component {...pageProps} />)}
           </SessionProvider>
         </Hydrate>
       </QueryClientProvider>

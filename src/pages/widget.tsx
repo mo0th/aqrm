@@ -1,4 +1,4 @@
-import MainLayout from '@/components/layouts/MainLayout'
+import { getLayout } from '@/components/layouts/MainLayout'
 import Title from '@/components/shared/Title'
 import Button from '@/components/ui/Button'
 import Head from 'next/head'
@@ -20,7 +20,7 @@ const DEFAULT_COLORS = {
   'success-2': '#ffffff',
 }
 
-const WidgetTestPage: React.FC = () => {
+const WidgetTestPage: Page = () => {
   const [colors, setColors] = useState(DEFAULT_COLORS)
   const [showCss, setShowCss] = useState(false)
   const [copied, setCopied] = useState(false)
@@ -67,7 +67,7 @@ const WidgetTestPage: React.FC = () => {
   }
 
   return (
-    <MainLayout>
+    <>
       <Head>
         <script src={`${process.env.NEXT_PUBLIC_BASE_URL}/aqrm.js?s=lol`} defer />
       </Head>
@@ -128,8 +128,10 @@ const WidgetTestPage: React.FC = () => {
           --aqrm-success-2: ${colors['success-2']};
         }
       `}</style>
-    </MainLayout>
+    </>
   )
 }
+
+WidgetTestPage.getLayout = getLayout
 
 export default WidgetTestPage

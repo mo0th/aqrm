@@ -14,3 +14,13 @@ declare namespace NodeJS {
     NEXT_PUBLIC_BASE_URL: string
   }
 }
+
+import type { FunctionComponent, ReactNode } from 'react'
+
+declare global {
+  type GetLayout = (page: ReactNode) => ReactNode
+
+  interface Page<T = any> extends FunctionComponent<T> {
+    getLayout?: GetLayout
+  }
+}

@@ -1,14 +1,16 @@
 import SitesSection from '@/components/dashboard/SitesSection'
-import MainLayout from '@/components/layouts/MainLayout'
+import { getLayout } from '@/components/layouts/MainLayout'
 import Title from '@/components/shared/Title'
 
-const SitesPage: React.FC = () => {
+const SitesPage: Page = () => {
   return (
-    <MainLayout>
+    <>
       <Title text="Your Sites" />
       <SitesSection />
-    </MainLayout>
+    </>
   )
 }
+
+SitesPage.getLayout = getLayout
 
 export default SitesPage

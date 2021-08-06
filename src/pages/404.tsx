@@ -1,5 +1,5 @@
 import Link from '@/components/ui/Link'
-import CenteredCardLayout from '@/components/layouts/CenteredCardLayout'
+import CenteredCardLayout, { getLayout } from '@/components/layouts/CenteredCardLayout'
 import { useMe } from '@/lib/auth.client'
 
 const links = [
@@ -21,7 +21,7 @@ const links = [
   },
 ]
 
-const NotFound: React.FC = () => {
+const NotFound: Page = () => {
   const { data: me } = useMe()
   return (
     <CenteredCardLayout>
@@ -43,5 +43,7 @@ const NotFound: React.FC = () => {
     </CenteredCardLayout>
   )
 }
+
+NotFound.getLayout = getLayout
 
 export default NotFound

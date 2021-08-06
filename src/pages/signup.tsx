@@ -1,6 +1,6 @@
 import type { FormEventHandler } from 'react'
 import type { GetServerSideProps } from 'next'
-import CenteredCardLayout from '@/components/layouts/CenteredCardLayout'
+import CenteredCardLayout, { getLayout } from '@/components/layouts/CenteredCardLayout'
 import InputField from '@/components/ui/InputField'
 import Button from '@/components/ui/Button'
 import Link from '@/components/ui/Link'
@@ -9,9 +9,7 @@ import { getFormFields } from '@/lib/forms.client'
 import { getSession } from 'next-auth/client'
 import Alert from '@/components/ui/Alert'
 
-interface SignupPageProps {}
-
-const SignupPage: React.FC<SignupPageProps> = () => {
+const SignupPage: Page = () => {
   const signup = useSignup()
 
   const handleSignup: FormEventHandler<HTMLFormElement> = async event => {
@@ -73,6 +71,8 @@ const SignupPage: React.FC<SignupPageProps> = () => {
     </CenteredCardLayout>
   )
 }
+
+SignupPage.getLayout = getLayout
 
 export default SignupPage
 

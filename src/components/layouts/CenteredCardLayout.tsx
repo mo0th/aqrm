@@ -8,4 +8,6 @@ const CenteredCardLayout: React.FC = ({ children }) => {
   )
 }
 
+export const getLayout: GetLayout = page => <CenteredCardLayout>{page}</CenteredCardLayout>
+
 export default CenteredCardLayout
