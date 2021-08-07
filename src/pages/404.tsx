@@ -8,10 +8,6 @@ const links = [
     href: '/sites',
   },
   {
-    text: 'Feedback',
-    href: '/feedback/all',
-  },
-  {
     text: 'Profile',
     href: '/profile',
   },
