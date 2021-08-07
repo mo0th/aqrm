@@ -15,6 +15,10 @@ const navLinks = [
     text: 'Profile',
     href: '/profile',
   },
+  {
+    text: 'Widget Editor',
+    href: '/widget',
+  },
 ]
 
 const MainLayout: React.FC = ({ children }) => {

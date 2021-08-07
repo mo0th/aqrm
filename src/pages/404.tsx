@@ -11,6 +11,10 @@ const links = [
     text: 'Profile',
     href: '/profile',
   },
+  {
+    text: 'Widget Editor',
+    href: '/widget',
+  },
 ]
 
 const NotFound: Page = () => {

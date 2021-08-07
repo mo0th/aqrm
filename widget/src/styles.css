@@ -42,6 +42,8 @@
   }
 
   /* Variables */
+  --bg: var(--aqrm-bg, #fff);
+  --fg: var(--aqrm-fg, #000);
   --primary: var(--aqrm-primary, #60a5fa);
   --primary-dark: var(--aqrm-primary-dark, #3b82f6);
   --primary-contrast: var(--aqrm-primary-contrast, white);
@@ -60,7 +62,8 @@
   width: 320px;
   height: 208px;
   padding: 0 16px;
-  background: white;
+  background: var(--bg);
+  color: var(--fg);
   border-radius: 16px;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   z-index: 999;
@@ -72,6 +75,8 @@
     resize: none;
     display: none;
     flex: 1;
+    background: var(--bg);
+    color: var(--fg);
 
     &:focus {
       border-color: var(--primary-dark);

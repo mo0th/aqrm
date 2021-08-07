@@ -5,6 +5,8 @@ import Head from 'next/head'
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
 
 const DEFAULT_COLORS = {
+  bg: '#ffffff',
+  fg: '#000000',
   primary: '#a78bfa',
   'primary-dark': '#8b5cf6',
   'primary-contrast': '#ffffff',
@@ -20,41 +22,92 @@ const DEFAULT_COLORS = {
   'success-2': '#ffffff',
 }
 
+const presets: Record<string, typeof DEFAULT_COLORS> = {
+  dracula: {
+    bg: '#282a36',
+    fg: '#f8f8f2',
+    primary: '#ff79c6',
+    'primary-dark': '#bd93f9',
+    'primary-contrast': '#f8f8f2',
+    base: '#44475a',
+    'base-dark': '#535D7F',
+    'base-darker': '#6272a4',
+    'issue-1': '#ff5555',
+    'issue-2': '#f8f8f2',
+    'idea-1': '#ffb86c',
+    'idea-2': '#f1fa8c',
+    'other-1': '#8be9fd',
+    'success-1': '#50fa7b',
+    'success-2': '#f8f8f2',
+  },
+}
+
 const WidgetTestPage: Page = () => {
   const [colors, setColors] = useState(DEFAULT_COLORS)
   const [showCss, setShowCss] = useState(false)
   const [copied, setCopied] = useState(false)
+  const [loading, setLoading] = useState(true)
   const trigger = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
-    let numTries = 0
-    let complete = false
-    let widget: any
+  const mountedRef = useRef(false)
 
-    while (numTries < 5 && !complete) {
-      const register = (window as any)._AQRM_REGISTER
-      if (!register) {
-        numTries++
-        continue
+  useEffect(() => {
+    setColors(presets.dracula)
+  }, [])
+
+  useEffect(() => {
+    mountedRef.current = true
+
+    return () => {
+      mountedRef.current = false
+    }
+  }, [])
+
+  useEffect(() => {
+    let timeout: ReturnType<typeof setTimeout>
+    let register
+
+    let widget: HTMLDivElement & { unregister: () => void }
+
+    let counter = 0
+
+    setLoading(true)
+
+    const loop = () => {
+      register = (window as any)._AQRM_REGISTER
+
+      counter++
+
+      if (!register && mountedRef.current) {
+        timeout = setTimeout(loop, 10)
+        return
       }
 
       widget = register(document.body, trigger.current)
+      setLoading(false)
 
-      complete = true
+      if (process.env.NODE_ENV !== 'production') {
+        console.log(`took ${counter} tries`)
+      }
     }
+
+    timeout = setTimeout(loop, 10)
 
     return () => {
       widget?.unregister()
+      clearTimeout(timeout)
     }
   }, [])
 
   const triggerElement = useMemo(() => {
     return (
       <span ref={trigger}>
-        <Button variant="primary">Trigger Popup</Button>
+        <Button variant="primary" loading={loading}>
+          Trigger Popup
+        </Button>
       </span>
     )
-  }, [])
+  }, [loading])
 
   const css = `:root {\n${Object.entries(colors)
     .map(([name, value]) => `  --aqrm-${name}: ${value};`)
@@ -113,6 +166,8 @@ const WidgetTestPage: Page = () => {
       </div>
       <style jsx>{`
         :global(body) {
+          --aqrm-bg: ${colors['bg']};
+          --aqrm-fg: ${colors['fg']};
           --aqrm-primary: ${colors['primary']};
           --aqrm-primary-dark: ${colors['primary-dark']};
           --aqrm-primary-contrast: ${colors['primary-contrast']};
