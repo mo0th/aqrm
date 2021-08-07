@@ -24,7 +24,7 @@ const MainLayout: React.FC = ({ children }) => {
     <>
       <header className="container flex items-center justify-between py-4 mb-8 md:py-6">
         <NextLink href="/dashboard">
-          <a className="text-3xl text-primary-700">AQRM</a>
+          <a className="text-3xl font-bold text-primary-700">AQRM</a>
         </NextLink>
 
         <nav className="flex items-center space-x-0 sm:space-x-4">

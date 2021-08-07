@@ -37,8 +37,9 @@ const DeleteSiteButton: React.FC<DeleteSiteButtonProps> = ({ siteName }) => {
         <div className="relative w-full max-w-lg p-8 space-y-6 bg-white shadow-xl rounded-2xl">
           <Dialog.Title className="text-4xl font-bold">Delete {siteName}</Dialog.Title>
           <Dialog.Description>
-            Are you sure you want to delete this site? This is irreverisble and will delete any
-            feedback for this site.
+            Are you sure you want to delete this site? This is <b>irreverisble</b> and will{' '}
+            <b>delete</b> any feedback for this site. Consider exporting feedback data before
+            deleting.
           </Dialog.Description>
 
           <div className="flex justify-end space-x-6">

@@ -11,6 +11,7 @@ const SiteView: React.FC<SiteViewProps> = ({ site }) => {
     <div>
       <h1 className="mb-8 text-4xl font-bold">{site.name}</h1>
       <FeedbackView siteName={site.name} />
+      <div aria-hidden className="py-8" />
       <SiteSettings site={site} />
     </div>
   )

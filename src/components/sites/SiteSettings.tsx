@@ -1,6 +1,7 @@
 import type { Site } from '@/lib/prisma.server'
 import { useEditSite } from '@/lib/sites.client'
 import type { ChangeEventHandler } from 'react'
+import Link from '../ui/Link'
 import DeleteSiteButton from './DeleteSiteButton'
 
 interface SiteSettingsProps {
@@ -44,6 +45,19 @@ const SiteSettings: React.FC<SiteSettingsProps> = ({ site }) => {
           onChange={handleCheckboxChange}
         />
       </div>
+      <div className="space-x-4">
+        <Link href={`/api/sites/${site.name}/csv`} target="_blank" download={`${site.name}.csv`}>
+          Export feedback as CSV
+        </Link>
+        <Link
+          href={`/api/sites/${site.name}/feedback`}
+          target="_blank"
+          download={`${site.name}.json`}
+        >
+          Export feedback as JSON
+        </Link>
+      </div>
+      <hr />
       <DeleteSiteButton siteName={site.name} />
     </section>
   )

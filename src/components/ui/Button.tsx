@@ -4,6 +4,7 @@ import clsx from 'clsx'
 
 export const sizes = {
   md: 'px-4 py-2 rounded',
+  sm: 'px-2 py-1 text-sm rounded',
 }
 
 const base = {
@@ -25,7 +26,12 @@ export const variants = {
   },
   delete: {
     DEFAULT: 'bg-red-600 text-white',
-    ACTIVE: 'hover:bg-red-500 transition focus:ring focus:ring-primary-300',
+    ACTIVE: 'hover:bg-red-500 transition focus:ring focus:ring-red-300',
+    DISABLED: 'opacity-40',
+  },
+  transparentDelete: {
+    DEFAULT: 'bg-transparent text-red-700',
+    ACTIVE: 'hover:bg-red-100 transition focus:ring focus:ring-red-300',
     DISABLED: 'opacity-40',
   },
 }
@@ -65,7 +71,7 @@ const Button: React.FC<ButtonProps> = ({
         <>
           <span aria-hidden className="absolute inset-0 flex items-center justify-center">
             <span
-              className="h-[1em] w-[1em] rounded-full border-2 animate-spin-fast"
+              className="h-[1em] w-[1em] rounded-full border-2 border-current animate-spin-fast"
               style={{ borderBottomColor: 'transparent', borderRightColor: 'transparent' }}
             />
             <span className="sr-only">Loading</span>
