@@ -1,6 +1,5 @@
 import { ApiUser, FeedbackType } from '@/types'
 import type { Feedback } from '@prisma/client'
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime'
 import { z } from 'zod'
 import { ApiError } from './error.server'
 import prisma from './prisma.server'
@@ -26,6 +25,10 @@ export const createFeedback = async (
   { text, type, userId }: CreateFeedbackInput
 ): Promise<void> => {
   try {
+    const site = await prisma.site.findUnique({ where: { name: siteName } })
+
+    if (!site?.allowFeedback) return
+
     await prisma.feedback.create({
       data: {
         text,
@@ -39,12 +42,6 @@ export const createFeedback = async (
       },
     })
   } catch (err) {
-    if (err instanceof PrismaClientKnownRequestError) {
-      // This happens when a site doesn't exist
-      if (err.code === 'P2025') {
-        return
-      }
-    }
     console.error(err)
   }
 }
