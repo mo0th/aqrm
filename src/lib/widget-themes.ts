@@ -1,0 +1,38 @@
+export const DEFAULT_COLORS = {
+  bg: '#ffffff',
+  fg: '#000000',
+  primary: '#a78bfa',
+  'primary-dark': '#8b5cf6',
+  'primary-contrast': '#ffffff',
+  base: '#e5e7eb',
+  'base-dark': '#d1d5db',
+  'base-darker': '#9ca3af',
+  'issue-1': '#fcd34d',
+  'issue-2': '#78350f',
+  'idea-1': '#fcd34d',
+  'idea-2': '#78350f',
+  'other-1': '#78350f',
+  'success-1': '#22db69',
+  'success-2': '#ffffff',
+}
+
+export const presets: Record<string, typeof DEFAULT_COLORS> = {
+  default: DEFAULT_COLORS,
+  dracula: {
+    bg: '#282a36',
+    fg: '#f8f8f2',
+    primary: '#ff79c6',
+    'primary-dark': '#bd93f9',
+    'primary-contrast': '#f8f8f2',
+    base: '#44475a',
+    'base-dark': '#535D7F',
+    'base-darker': '#6272a4',
+    'issue-1': '#ff5555',
+    'issue-2': '#f8f8f2',
+    'idea-1': '#ffb86c',
+    'idea-2': '#f1fa8c',
+    'other-1': '#8be9fd',
+    'success-1': '#50fa7b',
+    'success-2': '#f8f8f2',
+  },
+}
