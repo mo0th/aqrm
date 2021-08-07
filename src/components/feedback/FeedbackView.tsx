@@ -1,5 +1,6 @@
 import { useDeleteFeedback, useSiteFeedback } from '@/lib/feedback.client'
 import type { FeedbackType } from '@/types'
+import SiteScript from '../sites/SiteScript'
 import Button from '../ui/Button'
 import Spinner from '../ui/Spinner'
 import FeedbackTypePill from './FeedbackTypePill'
@@ -59,8 +60,12 @@ const FeedbackView: React.FC<FeedbackViewProps> = ({ siteName }) => {
             </div>
           ))}
           {data?.length === 0 && (
-            <div className="py-24 text-center col-span-full">
-              This site hasn&apos;t received any feedback yet.
+            <div className="flex flex-col items-center py-12 space-y-4 col-span-full">
+              <p className="max-w-md">
+                This site hasn&apos;t received any feedback yet. Add the following code to your site
+                to start collecting feedback.
+              </p>
+              <SiteScript siteName={siteName} />
             </div>
           )}
         </div>

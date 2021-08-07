@@ -48,6 +48,7 @@ const Button: React.FC<ButtonProps> = ({
   disabled,
   loading = false,
   children,
+  className,
   ...rest
 }) => {
   const shouldUsedisabledStyles = disabled || loading
@@ -62,7 +63,8 @@ const Button: React.FC<ButtonProps> = ({
         variantClasses.DEFAULT,
         shouldUsedisabledStyles ? base.DISABLED : base.ACTIVE,
         shouldUsedisabledStyles ? variantClasses.DISABLED : variantClasses.ACTIVE,
-        sizes[size]
+        sizes[size],
+        className
       )}
       {...rest}
     >

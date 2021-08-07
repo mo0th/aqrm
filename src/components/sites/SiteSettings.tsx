@@ -1,14 +1,18 @@
 import type { Site } from '@/lib/prisma.server'
 import { useEditSite } from '@/lib/sites.client'
-import type { ChangeEventHandler } from 'react'
+import { ChangeEventHandler, useState } from 'react'
+import Button from '../ui/Button'
 import Link from '../ui/Link'
 import DeleteSiteButton from './DeleteSiteButton'
+import SiteScript from './SiteScript'
 
 interface SiteSettingsProps {
   site: Site
 }
 
 const SiteSettings: React.FC<SiteSettingsProps> = ({ site }) => {
+  const [showScript, setShowScript] = useState(false)
+
   const editSite = useEditSite(site.name)
 
   const handleCheckboxChange: ChangeEventHandler<HTMLInputElement> = async event => {
@@ -57,6 +61,11 @@ const SiteSettings: React.FC<SiteSettingsProps> = ({ site }) => {
           Export feedback as JSON
         </Link>
       </div>
+      <hr />
+      <Button variant="primary" onClick={() => setShowScript(p => !p)}>
+        {showScript ? 'Hide' : 'Show'} Script
+      </Button>
+      {showScript && <SiteScript siteName={site.name} />}
       <hr />
       <DeleteSiteButton siteName={site.name} />
     </section>

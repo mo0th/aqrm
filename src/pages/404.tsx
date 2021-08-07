@@ -1,12 +1,8 @@
 import Link from '@/components/ui/Link'
-import CenteredCardLayout, { getLayout } from '@/components/layouts/CenteredCardLayout'
+import { getLayout } from '@/components/layouts/CenteredCardLayout'
 import { useMe } from '@/lib/auth.client'
 
 const links = [
-  {
-    text: 'Dashboard',
-    href: '/dashboard',
-  },
   {
     text: 'Sites',
     href: '/sites',
@@ -24,7 +20,7 @@ const links = [
 const NotFound: Page = () => {
   const { data: me } = useMe()
   return (
-    <CenteredCardLayout>
+    <>
       <h1 className="mb-8 text-4xl font-bold text-center">Page Not Found</h1>
       <div className="flex justify-around space-x-4">
         {me?.user ? (
@@ -40,7 +36,7 @@ const NotFound: Page = () => {
           </>
         )}
       </div>
-    </CenteredCardLayout>
+    </>
   )
 }
 
