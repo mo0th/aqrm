@@ -23,6 +23,7 @@ const DEFAULT_COLORS = {
 }
 
 const presets: Record<string, typeof DEFAULT_COLORS> = {
+  default: DEFAULT_COLORS,
   dracula: {
     bg: '#282a36',
     fg: '#f8f8f2',
@@ -127,7 +128,7 @@ const WidgetTestPage: Page = () => {
       <Title text="Theme Editor" />
       <h1 className="mb-8 text-4xl font-bold">Widget Theme Editor</h1>
       <div className="grid gap-8 md:grid-cols-2">
-        <div className="p-8 bg-white shadow-lg rounded-2xl">
+        <div className="p-8 space-y-6 bg-white shadow-lg rounded-2xl">
           <div className="space-y-4">
             {Object.entries(colors).map(([name, value]) => (
               <Fragment key={name}>
@@ -148,7 +149,7 @@ const WidgetTestPage: Page = () => {
               </Fragment>
             ))}
           </div>
-          <div className="grid grid-cols-2 gap-4 mt-6">
+          <div className="grid grid-cols-2 gap-4">
             <Button variant="muted" onClick={() => setShowCss(c => !c)}>
               {showCss ? 'Hide' : 'Show'} CSS
             </Button>
@@ -156,7 +157,21 @@ const WidgetTestPage: Page = () => {
               {copied ? 'Copied' : 'Copy CSS'}
             </Button>
           </div>
-          {showCss && <pre className="mt-4">{css}</pre>}
+          {showCss && <pre>{css}</pre>}
+          <hr />
+          <div>
+            <h2 className="text-2xl font-bold">Presets</h2>
+            <div className="py-4" />
+            <div className="-mt-4 -ml-4">
+              {Object.entries(presets).map(([theme, themeColors]) => (
+                <span key={theme} className="mt-4 ml-4">
+                  <Button variant="muted" onClick={() => setColors(themeColors)}>
+                    {theme}
+                  </Button>
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
         <div className="row-start-1 md:col-start-2">
           <div className="flex items-center justify-center max-h-[24rem] h-full sticky top-0">
