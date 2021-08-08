@@ -1,7 +1,7 @@
 import type { GetServerSideProps } from 'next'
 import { getCsrfToken, getSession } from 'next-auth/client'
 
-import CenteredCardLayout, { getLayout } from '@/components/layouts/CenteredCardLayout'
+import { getLayout } from '@/components/layouts/CenteredCardLayout'
 import InputField from '@/components/ui/InputField'
 import Button from '@/components/ui/Button'
 import Link from '@/components/ui/Link'
@@ -12,7 +12,7 @@ interface LoginPageProps {
 
 const LoginPage: Page<LoginPageProps> = ({ csrfToken }) => {
   return (
-    <CenteredCardLayout>
+    <>
       <h1 className="mb-8 text-4xl font-bold text-center">Login</h1>
       <form className="space-y-6" method="post" action="/api/auth/callback/credentials">
         <input type="hidden" name="csrfToken" defaultValue={csrfToken} hidden />
@@ -39,7 +39,7 @@ const LoginPage: Page<LoginPageProps> = ({ csrfToken }) => {
           </Button>
         </div>
       </form>
-    </CenteredCardLayout>
+    </>
   )
 }
 

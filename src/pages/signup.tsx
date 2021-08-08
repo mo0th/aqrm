@@ -1,6 +1,6 @@
 import type { FormEventHandler } from 'react'
 import type { GetServerSideProps } from 'next'
-import CenteredCardLayout, { getLayout } from '@/components/layouts/CenteredCardLayout'
+import { getLayout } from '@/components/layouts/CenteredCardLayout'
 import InputField from '@/components/ui/InputField'
 import Button from '@/components/ui/Button'
 import Link from '@/components/ui/Link'
@@ -24,7 +24,7 @@ const SignupPage: Page = () => {
   }
 
   return (
-    <CenteredCardLayout>
+    <>
       <h1 className="mb-8 text-4xl font-bold text-center">Signup</h1>
       {signup.status === 'success' && (
         <div className="mb-6">
@@ -68,7 +68,7 @@ const SignupPage: Page = () => {
           </Button>
         </div>
       </form>
-    </CenteredCardLayout>
+    </>
   )
 }
 
