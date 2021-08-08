@@ -5,16 +5,43 @@ import { getLayout } from '@/components/layouts/CenteredCardLayout'
 import InputField from '@/components/ui/InputField'
 import Button from '@/components/ui/Button'
 import Link from '@/components/ui/Link'
+import { useLogin } from '@/lib/auth.client'
+import { getFormFields } from '@/lib/forms.client'
+import type { FormEventHandler } from 'react'
+import Alert from '@/components/ui/Alert'
 
 interface LoginPageProps {
   csrfToken: string
 }
 
 const LoginPage: Page<LoginPageProps> = ({ csrfToken }) => {
+  const login = useLogin()
+
+  const handleLogin: FormEventHandler<HTMLFormElement> = async event => {
+    event.preventDefault()
+
+    const form = event.currentTarget
+
+    const body = getFormFields<{ email: string; password: string }>(form)
+
+    await login.mutateAsync(body)
+    form.reset()
+  }
+
   return (
     <>
       <h1 className="mb-8 text-4xl font-bold text-center">Login</h1>
-      <form className="space-y-6" method="post" action="/api/auth/callback/credentials">
+      {login.status === 'error' && (
+        <div className="mb-6">
+          <Alert variant="error">Invalid Login Credentials</Alert>
+        </div>
+      )}
+      <form
+        className="space-y-6"
+        method="post"
+        onSubmit={handleLogin}
+        action="/api/auth/callback/credentials"
+      >
         <input type="hidden" name="csrfToken" defaultValue={csrfToken} hidden />
         <InputField
           label="Email"
@@ -34,7 +61,7 @@ const LoginPage: Page<LoginPageProps> = ({ csrfToken }) => {
         />
         <div className="flex items-center justify-between">
           <Link href="/signup">Don&apos;t have an account? Sign Up!</Link>
-          <Button variant="primary" type="submit">
+          <Button variant="primary" type="submit" loading={login.isLoading}>
             Login
           </Button>
         </div>

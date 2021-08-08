@@ -5,6 +5,8 @@
  * Put type declarations in here
  */
 
+import type { FunctionComponent, ReactNode } from 'react'
+
 declare namespace NodeJS {
   // Extend `process.env` for better type completion
   interface ProcessEnv {
@@ -14,8 +16,6 @@ declare namespace NodeJS {
     NEXT_PUBLIC_BASE_URL: string
   }
 }
-
-import type { FunctionComponent, ReactNode } from 'react'
 
 declare global {
   type GetLayout = (page: ReactNode) => ReactNode

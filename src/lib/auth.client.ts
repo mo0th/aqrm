@@ -1,5 +1,6 @@
 import type { ApiUser } from '@/types'
-import { signout } from 'next-auth/client'
+import { signout, signin } from 'next-auth/client'
+import { useRouter } from 'next/router'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { api } from './api.client'
 
@@ -18,14 +19,38 @@ export const useSignup = () => {
   )
 }
 
+export const useLogin = () => {
+  const queryClient = useQueryClient()
+  const router = useRouter()
+
+  return useMutation<void, string, { email: string; password: string }>(
+    async vars => {
+      const response = await signin('credentials', { ...vars, redirect: false })
+
+      if (response?.error) {
+        throw response?.error
+      }
+    },
+    {
+      onSuccess: () => {
+        queryClient.clear()
+        router.push('/sites')
+      },
+    }
+  )
+}
+
 export const useLogout = () => {
   const queryClient = useQueryClient()
 
-  return useMutation<undefined, null>(() => signout({ callbackUrl: '/logged-out' }), {
-    onSuccess: () => {
-      queryClient.clear()
-    },
-  })
+  return useMutation<undefined, null>(
+    () => signout({ callbackUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/logged-out` }),
+    {
+      onSuccess: () => {
+        queryClient.clear()
+      },
+    }
+  )
 }
 
 export const useMe = () => {

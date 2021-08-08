@@ -7,17 +7,13 @@ const navLinks = [
     text: 'Sites',
     href: '/sites',
   },
-  // {
-  //   text: 'Feedback',
-  //   href: '/feedback/all',
-  // },
-  {
-    text: 'Profile',
-    href: '/profile',
-  },
   {
     text: 'Widget Editor',
     href: '/widget',
+  },
+  {
+    text: 'Logout',
+    href: '/logout',
   },
 ]
 
