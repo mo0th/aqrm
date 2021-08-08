@@ -91,7 +91,9 @@ const WidgetTestPage: Page = () => {
             {Object.entries(colors).map(([name, value]) => (
               <Fragment key={name}>
                 <label className="flex items-center pl-1 space-x-4 cursor-pointer" htmlFor={name}>
-                  <div style={{ background: value }} className="w-8 h-8 outline-black" />
+                  <div className="w-8 h-8 p-px -m-2 border-2 border-gray-800 border-dotted rounded">
+                    <div style={{ backgroundColor: value }} className="w-full h-full rounded-sm" />
+                  </div>
                   <div>{name}</div>
                 </label>
                 <input
@@ -119,10 +121,10 @@ const WidgetTestPage: Page = () => {
           <hr />
           <div>
             <h2 className="text-2xl font-bold">Presets</h2>
-            <div className="py-4" />
+            <div className="pt-4" />
             <div className="-mt-4 -ml-4">
               {Object.entries(presets).map(([theme, themeColors]) => (
-                <span key={theme} className="mt-4 ml-4">
+                <span key={theme} className="inline-block mt-4 ml-4">
                   <Button variant="muted" onClick={() => setColors(themeColors)}>
                     {theme}
                   </Button>
