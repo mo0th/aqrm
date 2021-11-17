@@ -1,3 +1,4 @@
 node_modules
 .next
 widget/dist
+public/script.js

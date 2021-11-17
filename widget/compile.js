@@ -7,6 +7,13 @@ import cssnano from 'cssnano'
 import hbs from 'handlebars'
 import htmlnano from 'htmlnano'
 import { minify } from 'terser'
+import gzipSize from 'gzip-size'
+import _brotliSize from 'brotli-size'
+
+let brotliSize = _brotliSize
+if (typeof brotliSize !== 'function') {
+  brotliSize = brotliSize.default
+}
 
 /**
  * @param {string} fileName
@@ -52,11 +59,14 @@ const main = async () => {
   const css = await processStyles()
   const widgetHtml = await processHtml()
   const script = await processScript({ css, widgetHtml })
+  const [gzipLength, brotliLength] = await Promise.all([gzipSize(script), brotliSize(script)])
 
   console.log(`CSS   : ${css.length}`)
   console.log(`HTML  : ${widgetHtml.length}`)
   console.log(`JS    : ${script.length - css.length - widgetHtml.length}`)
   console.log(`Bundle: ${script.length}`)
+  console.log(`gzip  : ${gzipLength}`)
+  console.log(`Brotli: ${brotliLength}`)
 
   if (!existsSync(path.join(process.cwd(), 'dist'))) {
     fs.mkdir(path.join(process.cwd(), 'dist'))

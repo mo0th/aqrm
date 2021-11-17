@@ -1,7 +1,7 @@
 import { createApiHandler } from '@/lib/api.server'
 import { getUserFromRequest } from '@/lib/auth.server'
+import { ApiError } from '@/lib/error.server'
 import { getFeedbackForSite } from '@/lib/feedback.server'
-import { ApiError } from 'next/dist/next-server/server/api-utils'
 
 export default createApiHandler(async (req, res) => {
   if (typeof req.query.name !== 'string') {

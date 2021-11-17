@@ -8,7 +8,7 @@ export const sizes = {
 }
 
 const base = {
-  DEFAULT: 'focus:outline-none relative inline-flex justify-center',
+  DEFAULT: 'focus:outline-none relative inline-flex justify-center space-x-1 items-center',
   ACTIVE: '',
   DISABLED: 'cursor-not-allowed',
 }
@@ -25,13 +25,13 @@ export const variants = {
     DISABLED: 'opacity-40',
   },
   delete: {
-    DEFAULT: 'bg-red-600 text-white',
-    ACTIVE: 'hover:bg-red-500 transition focus:ring focus:ring-red-300',
+    DEFAULT: 'bg-error-600 text-white',
+    ACTIVE: 'hover:bg-error-500 transition focus:ring focus:ring-error-300',
     DISABLED: 'opacity-40',
   },
   transparentDelete: {
-    DEFAULT: 'bg-transparent text-red-700',
-    ACTIVE: 'hover:bg-red-100 transition focus:ring focus:ring-red-300',
+    DEFAULT: 'bg-transparent text-error-700',
+    ACTIVE: 'hover:bg-error-100 transition focus:ring focus:ring-error-300',
     DISABLED: 'opacity-40',
   },
 }

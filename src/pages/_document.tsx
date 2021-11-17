@@ -21,6 +21,13 @@ class MyDocument extends NextDocument {
             type="font/woff2"
             crossOrigin="anonymous"
           />
+          <script
+            async
+            defer
+            data-domain="aqrm.mooth.tech"
+            data-api="https://mooth.tech/proxy/api/event"
+            src="https://mooth.tech/js/potato.js"
+          />
         </Head>
         <body className="h-full min-h-screen text-black bg-gray-100">
           <Main />

@@ -1,3 +1,4 @@
+import { useMe } from '@/lib/auth.client'
 import { useDeleteFeedback, useSiteFeedback } from '@/lib/feedback.client'
 import type { FeedbackType } from '@/types'
 import SiteScript from '../sites/SiteScript'
@@ -11,6 +12,7 @@ interface FeedbackViewProps {
 
 const FeedbackView: React.FC<FeedbackViewProps> = ({ siteName }) => {
   const { data, status } = useSiteFeedback(siteName)
+  const me = useMe()
 
   const deleteFeedback = useDeleteFeedback(siteName)
 
@@ -48,11 +50,13 @@ const FeedbackView: React.FC<FeedbackViewProps> = ({ siteName }) => {
                 {feedbackItem.userId && (
                   <p className="text-xs italic truncate">uid: {feedbackItem.userId}</p>
                 )}
+                <div className="flex-1" />
                 <Button
                   variant="transparentDelete"
                   size="sm"
                   onClick={handleDeleteFeedback(feedbackItem.id)}
                   loading={deleteFeedback.variables?.id === feedbackItem.id}
+                  disabled={!me.data}
                 >
                   Delete
                 </Button>

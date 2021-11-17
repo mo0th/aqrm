@@ -11,6 +11,7 @@ module.exports = {
     extend: {
       colors: {
         primary: colors.purple,
+        error: colors.red,
         ...colors,
       },
       fontFamily: {

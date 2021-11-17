@@ -54,7 +54,7 @@ export const useLogout = () => {
 }
 
 export const useMe = () => {
-  return useQuery<{ user: ApiUser | null }>('me', {
-    queryFn: () => api('/api/auth/me'),
+  return useQuery<ApiUser | null>('me', {
+    queryFn: () => api<{ user: ApiUser | null }>('/api/auth/me').then(({ user }) => user),
   })
 }

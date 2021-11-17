@@ -7,7 +7,9 @@ interface SiteScriptProps {
 
 const getScript = (name: string) =>
   `<!-- AQRM Script -->
-<script src="${process.env.NEXT_PUBLIC_BASE_URL}/aqrm.js?s=${encodeURIComponent(name)}"></script>
+<script async defer src="${process.env.NEXT_PUBLIC_BASE_URL}/aqrm.js?s=${encodeURIComponent(
+    name
+  )}"></script>
 
 <!-- Popup Trigger -->
 <button data-aqrm>Give Feedback</button>`

@@ -23,7 +23,7 @@ const NotFound: Page = () => {
     <>
       <h1 className="mb-8 text-4xl font-bold text-center">Page Not Found</h1>
       <div className="flex justify-around space-x-4">
-        {me?.user ? (
+        {me ? (
           links.map(({ href, text }) => (
             <Link href={href} key={href}>
               {text}

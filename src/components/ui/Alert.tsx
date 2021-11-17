@@ -4,7 +4,7 @@ const base = 'p-4 border rounded'
 
 const variants = {
   success: 'bg-primary-100 border-primary-700 text-primary-700',
-  error: 'bg-red-100 border-red-700 text-red-700',
+  error: 'bg-error-100 border-error-700 text-error-700',
 }
 
 interface AlertProps {
