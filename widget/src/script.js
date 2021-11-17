@@ -1,25 +1,29 @@
 ;(() => {
+  /**
+   * @returns {HTMLElement}
+   */
   let createElement = tag => document.createElement(tag)
+  let getRect = e => e.getBoundingClientRect()
 
   let selectTypeStatus = 't'
 
   let style = createElement('style')
-  style.innerHTML = `{{{css}}}`
-  document.head.appendChild(style)
+  style.innerHTML = '{{{css}}}'
+  document.head.append(style)
 
   let registerWidget = (parent, trigger, isSticky) => {
     let container = createElement('div')
-    container.innerHTML = `{{{widgetHtml}}}`
-    parent.appendChild(container)
+    container.innerHTML = '{{{widgetHtml}}}'
+    parent.append(container)
 
-    let widget = container.firstElementChild
+    let widget = container.firstChild
     let widgetQuerySelector = selector => widget.querySelector(selector)
     /** @type {HTMLFormElement} */
     let form = widgetQuerySelector('form')
     /** @type {HTMLTextAreaElement} */
     let textarea = widgetQuerySelector('textarea')
     /** @type {HTMLButtonElement} */
-    let submitBtn = widgetQuerySelector('[type=submit]')
+    let submitBtn = widgetQuerySelector('#aqrm-submit')
     /** @type {HTMLHeadingElement} */
     let heading = widgetQuerySelector('h1')
     /** @type {HTMLInputElement} */
@@ -34,14 +38,12 @@
         textarea.value = ''
         submitBtn.disabled = true
       }
-      widget.setAttribute('s', state)
+      widget.dataset.s = state
     }
 
     let reposition = () => {
-      let getRect = e => e.getBoundingClientRect()
       let widgetRect = getRect(widget)
       let top = 16
-      let left = 16
 
       let triggerRect = getRect(trigger)
 
@@ -54,17 +56,18 @@
         top = positionBelow
       }
 
-      let triggerCenter = triggerRect.left + triggerRect.width / 2
-      let positionCentered = triggerCenter - widgetRect.width / 2
-
-      left = Math.min(Math.max(16, positionCentered), window.innerWidth)
+      let left = Math.min(
+        Math.max(16, triggerRect.left + triggerRect.width / 2 - widgetRect.width / 2),
+        window.innerWidth
+      )
 
       widget.style.top = `${top}px`
       widget.style.left = `${left}px`
     }
 
     let showWidget = () => {
-      widget.style.display = 'block'
+      // widget.style.display = 'block'
+      widget.hidden = false
       widget.focus()
       reposition()
       window.addEventListener('scroll', reposition)
@@ -75,7 +78,8 @@
       if (isSticky) {
         setState(selectTypeStatus)
       } else {
-        widget.style.display = 'none'
+        // widget.style.display = 'none'
+        widget.hidden = true
         trigger.focus()
         window.removeEventListener('scroll', reposition)
         window.removeEventListener('resize', reposition)
@@ -83,34 +87,34 @@
     }
 
     let triggerHandler = () => {
-      if (widget.style.display === 'block') {
-        hideWidget()
-      } else {
+      if (widget.hidden) {
         showWidget()
+      } else {
+        hideWidget()
       }
     }
 
     trigger.addEventListener('click', triggerHandler)
 
-    form.onsubmit = async e => {
+    form.onsubmit = e => {
       e.preventDefault()
-      submitBtn.setAttribute('loading', true)
+      // submitBtn.setAttribute('loading', '')
+      // submitBtn.setAttribute('data-l', '')
+      submitBtn.dataset.l = ''
       textarea.disabled = true
       submitBtn.disabled = true
-      let data = Object.fromEntries(new FormData(form))
-      data.text = textarea.value
-      try {
-        await fetch(`${window._AQRM_BASE_URL}/api/feedback`, {
-          method: 'POST',
-          body: JSON.stringify(data),
-          headers: { 'Content-Type': 'application/json' },
-        })
-      } finally {
-        submitBtn.removeAttribute('loading')
+
+      fetch(window._AQRM_BASE_URL + '/api/feedback', {
+        method: 'POST',
+        body: JSON.stringify(Object.fromEntries(new FormData(form))),
+      }).finally(_ => {
+        // submitBtn.removeAttribute('loading')
+        // submitBtn.removeAttribute('data-l')
+        delete submitBtn.dataset.l
         textarea.disabled = false
         form.reset()
         setState('s')
-      }
+      })
     }
 
     widgetQuerySelector('#aqrm-btn-close').onclick = _ => {
@@ -133,21 +137,17 @@
 
       if (!btn) return
 
-      let type = btn.getAttribute('aria-label')
+      let type = btn.dataset.t
 
-      textarea.placeholder = {
-        issue: 'I noticed that...',
-        idea: 'I would love...',
-        other: 'What do you want to know about us?',
+      let [placeholder, heading] = {
+        ISSUE: ['I noticed that...', 'Report an Issue'],
+        IDEA: ['I would love...', 'Share an Idea'],
+        OTHER: ['What do you want to know about us?', 'Tell us anything!'],
       }[type]
+      textarea.placeholder = placeholder
+      heading.innerText = heading
 
-      heading.innerText = {
-        issue: 'Report an Issue',
-        idea: 'Share an Idea',
-        other: 'Tell us anything!',
-      }[type]
-
-      typeInput.value = type.toUpperCase()
+      typeInput.value = type
 
       setState('i')
       textarea.focus()

@@ -7,17 +7,19 @@
   "license": "MIT",
   "scripts": {
     "build": "node compile.js",
-    "dev": "nodemon -w ./src -w compile.js -e \"js css html\" compile.js"
+    "dev:build": "node compile.js && cp ./dist/script.js ../public/",
+    "dev": "nodemon -w ./src -w compile.js -e \"js css html\" --exec \"yarn dev:build\""
   },
   "devDependencies": {
+    "brotli-size": "^4.0.0",
     "cssnano": "^5.0.6",
+    "cssnano-preset-advanced": "^5.1.7",
+    "gzip-size": "^6.0.0",
     "handlebars": "^4.7.7",
     "nodemon": "^2.0.12",
     "postcss": "^8.3.5",
-    "postcss-nesting": "^8.0.1"
+    "postcss-nesting": "^8.0.1",
+    "postcss-variable-compress": "^0.2.4"
   },
-  "dependencies": {
-    "brotli-size": "^4.0.0",
-    "gzip-size": "^6.0.0"
-  }
+  "dependencies": {}
 }

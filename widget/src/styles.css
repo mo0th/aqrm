@@ -1,4 +1,4 @@
-[data-widget] {
+.aqrm-w {
   font-family: sans-serif;
   & * {
     box-sizing: border-box;
@@ -50,13 +50,13 @@
   --base: var(--aqrm-base, #e5e7eb);
   --base-dark: var(--aqrm-base-dark, #d1d5db);
   --base-darker: var(--aqrm-base-darker, #9ca3af);
-  --issue-1: var(--aqrm-issue-1, #fcd34d);
-  --issue-2: var(--aqrm-issue-2, #78350f);
-  --idea-1: var(--aqrm-idea-1, #fcd34d);
-  --idea-2: var(--aqrm-idea-2, #78350f);
-  --other-1: var(--aqrm-other-1, #78350f);
-  --success-1: var(--aqrm-success-1, #22db69);
-  --success-2: var(--aqrm-success-2, white);
+  --_i1: var(--aqrm-issue-1, #fcd34d);
+  --_i2: var(--aqrm-issue-2, #78350f);
+  --_d1: var(--aqrm-idea-1, #fcd34d);
+  --_d2: var(--aqrm-idea-2, #78350f);
+  --_o1: var(--aqrm-other-1, #78350f);
+  --_s1: var(--aqrm-success-1, #22db69);
+  --_s2: var(--aqrm-success-2, white);
 
   position: fixed;
   width: 320px;
@@ -115,7 +115,7 @@
       display: none;
     }
 
-    &[loading] {
+    &[data-l] {
       & > .aqrm-btn-text {
         opacity: 0;
       }
@@ -251,7 +251,7 @@
     border-right-color: var(--base-dark);
   }
 
-  &[s='t'] {
+  &[data-s='t'] {
     & .aqrm-select-type {
       display: flex;
     }
@@ -260,7 +260,7 @@
     }
   }
 
-  &[s^='i'] {
+  &[data-s='i'] {
     & #text {
       display: block;
     }
@@ -269,7 +269,7 @@
     }
   }
 
-  &[s='s'] {
+  &[data-s='s'] {
     & .aqrm-success {
       display: flex;
     }

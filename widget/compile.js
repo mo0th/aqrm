@@ -4,6 +4,7 @@ import path from 'path'
 import postcss from 'postcss'
 import postcssNesting from 'postcss-nesting'
 import cssnano from 'cssnano'
+import varCompress from 'postcss-variable-compress'
 import hbs from 'handlebars'
 import htmlnano from 'htmlnano'
 import { minify } from 'terser'
@@ -28,7 +29,12 @@ const getSourceFile = async fileName => {
  * @returns {Promise<string>}
  */
 const processStyles = async () => {
-  const processor = postcss([postcssNesting, cssnano])
+  const prefixes = ['aqrm', '_']
+  const processor = postcss([
+    postcssNesting,
+    cssnano({ preset: 'default' }),
+    varCompress([n => prefixes.some(prefix => n.startsWith(`--${prefix}`))]),
+  ])
 
   const css = await getSourceFile('styles.css')
 
@@ -51,7 +57,7 @@ const processScript = async vars => {
 
 const processHtml = async () => {
   const text = await getSourceFile('widget.html')
-  const result = await htmlnano.process(text)
+  const result = await htmlnano.process(text, {}, htmlnano.presets.max)
   return result.html
 }
 
@@ -61,17 +67,21 @@ const main = async () => {
   const script = await processScript({ css, widgetHtml })
   const [gzipLength, brotliLength] = await Promise.all([gzipSize(script), brotliSize(script)])
 
-  console.log(`CSS   : ${css.length}`)
-  console.log(`HTML  : ${widgetHtml.length}`)
-  console.log(`JS    : ${script.length - css.length - widgetHtml.length}`)
-  console.log(`Bundle: ${script.length}`)
-  console.log(`gzip  : ${gzipLength}`)
-  console.log(`Brotli: ${brotliLength}`)
+  console.table({
+    CSS: css.length,
+    HTML: widgetHtml.length,
+    JS: script.length - css.length - widgetHtml.length,
+    BUNDLE: script.length,
+    GZIP: gzipLength,
+    BROTLI: brotliLength,
+  })
 
   if (!existsSync(path.join(process.cwd(), 'dist'))) {
     fs.mkdir(path.join(process.cwd(), 'dist'))
   }
   fs.writeFile(path.join(process.cwd(), 'dist', 'script.js'), script)
+  fs.writeFile(path.join(process.cwd(), 'dist', 'styles.css'), css)
+  fs.writeFile(path.join(process.cwd(), 'dist', 'widget.html'), widgetHtml)
 }
 
 main()

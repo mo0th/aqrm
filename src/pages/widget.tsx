@@ -44,6 +44,7 @@ const WidgetTestPage: Page = () => {
 
       widget = register(document.body, trigger.current)
       setLoading(false)
+      trigger.current?.click()
 
       if (process.env.NODE_ENV !== 'production') {
         console.log(`took ${counter} tries`)
@@ -68,7 +69,9 @@ const WidgetTestPage: Page = () => {
     )
   }, [loading])
 
-  const css = `:root {\n${Object.entries(colors)
+  const colorEntries = Object.entries(colors)
+
+  const css = `:root {\n${colorEntries
     .map(([name, value]) => `  --aqrm-${name}: ${value};`)
     .join('\n')}\n}`
 
@@ -88,7 +91,7 @@ const WidgetTestPage: Page = () => {
       <div className="grid gap-8 md:grid-cols-2">
         <div className="p-8 space-y-6 bg-white shadow-lg rounded-2xl">
           <div className="space-y-4">
-            {Object.entries(colors).map(([name, value]) => (
+            {colorEntries.map(([name, value]) => (
               <Fragment key={name}>
                 <label className="flex items-center pl-1 space-x-4 cursor-pointer" htmlFor={name}>
                   <div className="w-8 h-8 p-px -m-2 border-2 border-gray-800 border-dotted rounded">
@@ -139,25 +142,7 @@ const WidgetTestPage: Page = () => {
           </div>
         </div>
       </div>
-      <style jsx>{`
-        :global(body) {
-          --aqrm-bg: ${colors['bg']};
-          --aqrm-fg: ${colors['fg']};
-          --aqrm-primary: ${colors['primary']};
-          --aqrm-primary-dark: ${colors['primary-dark']};
-          --aqrm-primary-contrast: ${colors['primary-contrast']};
-          --aqrm-base: ${colors['base']};
-          --aqrm-base-dark: ${colors['base-dark']};
-          --aqrm-base-darker: ${colors['base-darker']};
-          --aqrm-issue-1: ${colors['issue-1']};
-          --aqrm-issue-2: ${colors['issue-2']};
-          --aqrm-idea-1: ${colors['idea-1']};
-          --aqrm-idea-2: ${colors['idea-2']};
-          --aqrm-other-1: ${colors['other-1']};
-          --aqrm-success-1: ${colors['success-1']};
-          --aqrm-success-2: ${colors['success-2']};
-        }
-      `}</style>
+      <style>{css}</style>
     </>
   )
 }

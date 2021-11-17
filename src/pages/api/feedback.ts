@@ -5,6 +5,14 @@ export default createApiHandler(async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
   try {
     if (req.method === 'POST') {
+      if (typeof req.body === 'string') {
+        try {
+          req.body = JSON.parse(req.body)
+        } catch (err) {
+          req.body = {}
+        }
+      }
+
       const validationResult = await feedbackBodySchema.safeParseAsync(req.body)
 
       if (!validationResult.success) {
@@ -16,6 +24,8 @@ export default createApiHandler(async (req, res) => {
 
       await createFeedback(siteName, feedbackData)
     }
+  } catch (err) {
+    console.log(err)
   } finally {
     res.end()
   }
