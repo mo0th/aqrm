@@ -5,8 +5,8 @@ const handler: NextApiHandler = async (req, res) => {
   const { s } = req.query
 
   const script = await buildWidgetScript(typeof s === 'string' ? s : '')
-  res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader('Cache-Control', 's-max-age=31536000')
+  res.setHeader('Cache-Control', 's-max-age=2678400')
+  res.setHeader('Content-Type', 'application/javascript')
 
   res.end(script)
 }
