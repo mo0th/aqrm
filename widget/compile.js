@@ -5,7 +5,7 @@ import postcss from 'postcss'
 import postcssNesting from 'postcss-nesting'
 import cssnano from 'cssnano'
 import varCompress from 'postcss-variable-compress'
-import hbs from 'handlebars'
+import * as tempura from 'tempura'
 import htmlnano from 'htmlnano'
 import { minify } from 'terser'
 import gzipSize from 'gzip-size'
@@ -42,13 +42,15 @@ const processStyles = async () => {
   return processed.css
 }
 
+const tempuraOptions = { props: ['css', 'widgetHtml'] }
+
 /**
  * @param {Record<string,string>} vars
  * @returns {Promise<string>}
  */
 const processScript = async vars => {
   const text = await getSourceFile('script.js')
-  const template = hbs.compile(text)
+  const template = tempura.compile(text, tempuraOptions)
   const hydratedTemplate = template(vars)
   // return hydratedTemplate
   const minified = await minify(hydratedTemplate, { ecma: '2015' })

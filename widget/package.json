@@ -15,11 +15,10 @@
     "cssnano": "^5.0.6",
     "cssnano-preset-advanced": "^5.1.7",
     "gzip-size": "^6.0.0",
-    "handlebars": "^4.7.7",
     "nodemon": "^2.0.12",
     "postcss": "^8.3.5",
     "postcss-nesting": "^8.0.1",
-    "postcss-variable-compress": "^0.2.4"
-  },
-  "dependencies": {}
+    "postcss-variable-compress": "^0.2.4",
+    "tempura": "^0.4.0"
+  }
 }

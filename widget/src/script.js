@@ -61,12 +61,11 @@
         window.innerWidth
       )
 
-      widget.style.top = `${top}px`
-      widget.style.left = `${left}px`
+      widget.style.top = top + 'px'
+      widget.style.left = left + 'px'
     }
 
     let showWidget = () => {
-      // widget.style.display = 'block'
       widget.hidden = false
       widget.focus()
       reposition()
@@ -78,7 +77,6 @@
       if (isSticky) {
         setState(selectTypeStatus)
       } else {
-        // widget.style.display = 'none'
         widget.hidden = true
         trigger.focus()
         window.removeEventListener('scroll', reposition)
@@ -98,8 +96,6 @@
 
     form.onsubmit = e => {
       e.preventDefault()
-      // submitBtn.setAttribute('loading', '')
-      // submitBtn.setAttribute('data-l', '')
       submitBtn.dataset.l = ''
       textarea.disabled = true
       submitBtn.disabled = true
@@ -108,8 +104,6 @@
         method: 'POST',
         body: JSON.stringify(Object.fromEntries(new FormData(form))),
       }).finally(_ => {
-        // submitBtn.removeAttribute('loading')
-        // submitBtn.removeAttribute('data-l')
         delete submitBtn.dataset.l
         textarea.disabled = false
         form.reset()
