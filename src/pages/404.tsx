@@ -1,6 +1,7 @@
 import Link from '@/components/ui/Link'
 import { getLayout } from '@/components/layouts/CenteredCardLayout'
 import { useMe } from '@/lib/auth.client'
+import { config } from '@/config'
 
 const links = [
   {
@@ -32,7 +33,7 @@ const NotFound: Page = () => {
         ) : (
           <>
             <Link href="/login">Login</Link>
-            <Link href="/login">Sign Up</Link>
+            {config.enableSignup ? <Link href="/login">Sign Up</Link> : null}
           </>
         )}
       </div>

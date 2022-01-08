@@ -8,6 +8,7 @@ import { useSignup } from '@/lib/auth.client'
 import { getFormFields } from '@/lib/forms.client'
 import { getSession } from 'next-auth/client'
 import Alert from '@/components/ui/Alert'
+import { config } from '@/config'
 
 const SignupPage: Page = () => {
   const signup = useSignup()
@@ -77,6 +78,12 @@ SignupPage.getLayout = getLayout
 export default SignupPage
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
+  if (!config.enableSignup) {
+    return {
+      notFound: true,
+    }
+  }
+
   const session = await getSession(ctx)
 
   if (session?.user) {

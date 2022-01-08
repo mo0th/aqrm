@@ -21,7 +21,6 @@ const SitePage: Page = () => {
       )}
 
       {status === 'success' && data && <SiteView site={data} />}
-      {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
     </>
   )
 }

@@ -117,7 +117,7 @@ const WidgetTestPage: Page = () => {
               {showCss ? 'Hide' : 'Show'} CSS
             </Button>
             <Button variant="muted" onClick={copyCss}>
-              {copied ? 'Copied' : 'Copy CSS'}
+              {copied ? 'Copied 📋' : 'Copy CSS'}
             </Button>
           </div>
           {showCss && <pre>{css}</pre>}

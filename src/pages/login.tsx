@@ -9,6 +9,7 @@ import { useLogin } from '@/lib/auth.client'
 import { getFormFields } from '@/lib/forms.client'
 import type { FormEventHandler } from 'react'
 import Alert from '@/components/ui/Alert'
+import { config } from '@/config'
 
 interface LoginPageProps {
   csrfToken: string
@@ -59,8 +60,11 @@ const LoginPage: Page<LoginPageProps> = ({ csrfToken }) => {
           name="password"
           id="password"
         />
-        <div className="flex items-center justify-between">
-          <Link href="/signup">Don&apos;t have an account? Sign Up!</Link>
+        <div className="flex items-center">
+          {config.enableSignup ? (
+            <Link href="/signup">Don&apos;t have an account? Sign Up!</Link>
+          ) : null}
+          <div className="flex-1" />
           <Button variant="primary" type="submit" loading={login.isLoading}>
             Login
           </Button>
