@@ -4,8 +4,7 @@ const defaultTheme = require('tailwindcss/defaultTheme')
 
 /** @type {import('tailwindcss/tailwind-config').TailwindConfig} */
 module.exports = {
-  mode: 'jit',
-  purge: ['./src/**/*.{ts,tsx}'],
+  content: ['./src/**/*.{ts,tsx}'],
   darkMode: 'class',
   theme: {
     extend: {
@@ -21,9 +20,6 @@ module.exports = {
         'spin-fast': 'spin 0.5s linear infinite',
       },
     },
-  },
-  variants: {
-    extend: {},
   },
   plugins: [require('@tailwindcss/forms')({ strategy: 'class' })],
 }
