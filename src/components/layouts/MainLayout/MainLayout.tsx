@@ -35,9 +35,14 @@ const MainLayout: React.FC = ({ children }) => {
               </Link>
             ))
           ) : (
-            <Link href="/login" className="px-2 font-bold">
-              Login
-            </Link>
+            <>
+              <Link href="/widget" className="px-2 font-bold">
+                Widget Editor
+              </Link>
+              <Link href="/login" className="px-2 font-bold">
+                Login
+              </Link>
+            </>
           )}
         </nav>
       </header>
