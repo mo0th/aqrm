@@ -25,7 +25,7 @@
     /** @type {HTMLButtonElement} */
     let submitBtn = widgetQuerySelector('#aqrm-submit')
     /** @type {HTMLHeadingElement} */
-    let heading = widgetQuerySelector('h1')
+    let heading = widgetQuerySelector('.aqrm-heading')
     /** @type {HTMLInputElement} */
     let typeInput = widgetQuerySelector('[name=type]')
 
