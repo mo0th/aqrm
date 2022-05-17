@@ -133,13 +133,13 @@
 
       let type = btn.dataset.t
 
-      let [placeholder, heading] = {
+      let [placeholder, headingText] = {
         ISSUE: ['I noticed that...', 'Report an Issue'],
         IDEA: ['I would love...', 'Share an Idea'],
         OTHER: ['What do you want to know about us?', 'Tell us anything!'],
       }[type]
       textarea.placeholder = placeholder
-      heading.innerText = heading
+      heading.innerText = headingText
 
       typeInput.value = type
 
