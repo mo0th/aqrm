@@ -9,6 +9,7 @@ const variants = {
 
 interface AlertProps {
   variant: keyof typeof variants
+  children: React.ReactNode
 }
 
 const Alert: React.FC<AlertProps> = ({ variant, children }) => {

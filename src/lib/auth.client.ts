@@ -1,60 +1,95 @@
-import type { ApiUser } from '@/types'
-import { signout, signin } from 'next-auth/client'
+import type { ApiUser } from '~/types'
 import { useRouter } from 'next/router'
-import { useMutation, useQuery, useQueryClient } from 'react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { api } from './api.client'
-
-type TSignupInput = { name: string; email: string; password: string }
+import { createBrowserClient } from './supabase/client'
 
 export const useSignup = () => {
   const queryClient = useQueryClient()
 
-  return useMutation<{ success: true }, { issues: Partial<TSignupInput> }, TSignupInput>(
-    vars => api('/api/auth/signup', { method: 'POST', data: vars }),
-    {
-      onSuccess: () => {
-        queryClient.clear()
-      },
-    }
-  )
+  return useMutation({
+    mutationFn: async (vars: { name: string; email: string }) => {
+      const supabase = createBrowserClient()
+      return supabase.auth.signInWithOtp({
+        email: vars.email,
+        options: {
+          data: {
+            name: vars.name,
+          },
+        },
+      })
+    },
+    onSuccess: () => {
+      queryClient.clear()
+    },
+  })
 }
 
 export const useLogin = () => {
   const queryClient = useQueryClient()
   const router = useRouter()
 
-  return useMutation<void, string, { email: string; password: string }>(
-    async vars => {
-      const response = await signin('credentials', { ...vars, redirect: false })
+  return useMutation({
+    mutationFn: async (vars: { email: string }) => {
+      const supabase = createBrowserClient()
+      const response = await supabase.auth.signInWithOtp({
+        email: vars.email,
+        options: {
+          shouldCreateUser: false,
+        },
+      })
 
       if (response?.error) {
         throw response?.error
       }
     },
-    {
-      onSuccess: () => {
-        queryClient.clear()
-        router.push('/sites')
-      },
-    }
-  )
+    onSuccess: () => {
+      queryClient.clear()
+      router.push('/sites')
+    },
+  })
+}
+
+export const useLoginPW = () => {
+  const queryClient = useQueryClient()
+  const router = useRouter()
+
+  return useMutation({
+    mutationFn: async (vars: { email: string; password: string }) => {
+      const supabase = createBrowserClient()
+      const response = await supabase.auth.signInWithPassword({
+        email: vars.email,
+        password: vars.password,
+      })
+
+      if (response?.error) {
+        throw response?.error
+      }
+    },
+    onSuccess: () => {
+      queryClient.clear()
+      router.push('/sites')
+    },
+  })
 }
 
 export const useLogout = () => {
   const queryClient = useQueryClient()
 
-  return useMutation<undefined, null>(
-    () => signout({ callbackUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/logged-out` }),
-    {
-      onSuccess: () => {
-        queryClient.clear()
-      },
-    }
-  )
+  return useMutation({
+    mutationFn: async () => {
+      const supabase = createBrowserClient()
+      return supabase.auth.signOut()
+    },
+    onSuccess: () => {
+      queryClient.clear()
+    },
+  })
 }
 
 export const useMe = () => {
-  return useQuery<ApiUser | null>('me', {
+  return useQuery<ApiUser | null>({
+    queryKey: ['me'],
     queryFn: () => api<{ user: ApiUser | null }>('/api/auth/me').then(({ user }) => user),
   })
 }

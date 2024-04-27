@@ -1,5 +1,5 @@
-import type { Site } from '@/lib/prisma.server'
-import { useEditSite } from '@/lib/sites.client'
+import type { Site } from '~/lib/db/types'
+import { useEditSite } from '~/lib/sites.client'
 import { ChangeEventHandler, useState } from 'react'
 import Button from '../ui/Button'
 import Link from '../ui/Link'

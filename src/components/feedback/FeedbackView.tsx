@@ -1,6 +1,6 @@
-import { useMe } from '@/lib/auth.client'
-import { useDeleteFeedback, useSiteFeedback } from '@/lib/feedback.client'
-import type { FeedbackType } from '@/types'
+import { useMe } from '~/lib/auth.client'
+import { useDeleteFeedback, useSiteFeedback } from '~/lib/feedback.client'
+import type { FeedbackType } from '~/types'
 import SiteScript from '../sites/SiteScript'
 import Button from '../ui/Button'
 import Spinner from '../ui/Spinner'
@@ -23,7 +23,7 @@ const FeedbackView: React.FC<FeedbackViewProps> = ({ siteName }) => {
   return (
     <section className="mb-8 space-y-6">
       <h2 className="mb-4 text-2xl font-bold">Feedback</h2>
-      {status === 'loading' && (
+      {status === 'pending' && (
         <div className="text-center">
           <Spinner />
           <span className="ml-2">Loading feedback</span>

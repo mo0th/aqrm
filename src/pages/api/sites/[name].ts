@@ -1,7 +1,7 @@
-import { createApiHandler } from '@/lib/api.server'
-import { getUserFromRequest, userGuard } from '@/lib/auth.server'
-import { ApiError } from '@/lib/error.server'
-import { deleteSite, editSite, editSiteBodySchema, getSiteByName } from '@/lib/sites.server'
+import { createApiHandler } from '~/lib/api.server'
+import { getUserFromRequest, userGuard } from '~/lib/auth.server'
+import { ApiError } from '~/lib/error.server'
+import { deleteSite, editSite, editSiteBodySchema, getSiteByName } from '~/lib/sites.server'
 
 export default createApiHandler(async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*')

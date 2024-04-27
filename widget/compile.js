@@ -8,7 +8,7 @@ import varCompress from 'postcss-variable-compress'
 import * as tempura from 'tempura'
 import htmlnano from 'htmlnano'
 import { minify } from 'terser'
-import gzipSize from 'gzip-size'
+import { gzipSize } from 'gzip-size'
 import _brotliSize from 'brotli-size'
 
 let brotliSize = _brotliSize

@@ -1,5 +1,5 @@
-import Link from '@/components/ui/Link'
-import { useMe } from '@/lib/auth.client'
+import Link from '~/components/ui/Link'
+import { useMe } from '~/lib/auth.client'
 import NextLink from 'next/link'
 
 const navLinks = [
@@ -17,14 +17,14 @@ const navLinks = [
   },
 ]
 
-const MainLayout: React.FC = ({ children }) => {
+const MainLayout = ({ children }: { children: React.ReactNode }) => {
   const { data: me } = useMe()
 
   return (
     <>
       <header className="container flex items-center justify-between py-4 mb-8 md:py-6">
-        <NextLink href="/dashboard">
-          <a className="text-3xl font-bold text-primary-700">AQRM</a>
+        <NextLink href="/dashboard" className="text-3xl font-bold text-primary-700">
+          AQRM
         </NextLink>
 
         <nav className="flex items-center space-x-0 sm:space-x-4">
@@ -50,7 +50,5 @@ const MainLayout: React.FC = ({ children }) => {
     </>
   )
 }
-
-export const getLayout: GetLayout = page => <MainLayout>{page}</MainLayout>
 
 export default MainLayout

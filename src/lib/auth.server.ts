@@ -1,22 +1,13 @@
-import type { User } from 'next-auth'
 import { hash, compare } from 'bcryptjs'
 import crypto from 'crypto'
 import { z, ZodError } from 'zod'
 
-import type { ApiUser } from '@/types'
-import { prisma } from './prisma.server'
+import type { ApiUser } from '~/types'
 import { sleep } from './utils'
 import type { NextApiRequest } from 'next'
-import { getSession } from 'next-auth/client'
 import { ApiError } from './error.server'
-
-const hashPassword = (password: string): Promise<string> => {
-  return hash(password, 12)
-}
-
-const verifyPasswordHash = (hash: string, password: string): Promise<boolean> => {
-  return compare(password, hash)
-}
+import { db } from './db/client'
+import { createPagesServerClient } from './supabase/pages-server'
 
 const createGravatarUrl = (email: string): string => {
   const hashedEmail = crypto.createHash('md5').update(email).digest('hex')
@@ -24,30 +15,11 @@ const createGravatarUrl = (email: string): string => {
   return `https://www.gravatar.com/avatar/${hashedEmail}?d=identicon`
 }
 
-export const loginUser = async (email: string, password: string): Promise<User | null> => {
-  const existingUser = await prisma.user.findUnique({ where: { email } })
-
-  if (!existingUser) {
-    return null
-  }
-
-  const isPasswordCorrect = await verifyPasswordHash(existingUser.passwordHash, password)
-
-  if (!isPasswordCorrect) {
-    await sleep(1000)
-    return null
-  }
-
-  const { name, picture, id } = existingUser
-
-  return { id, email, name, picture }
-}
-
-export const signupUser = async (name: string, email: string, password: string): Promise<void> => {
+export const createUser = async (supabaseId: string, email: string): Promise<void> => {
   // normalise email for gravatar
   email = email.trim().toLowerCase()
 
-  const existingUser = await prisma.user.findUnique({ where: { email } })
+  const existingUser = await db.query.user.findFirst({ where: (f, c) => c.eq(f.email, email) })
 
   if (existingUser) {
     await sleep(1000)
@@ -56,11 +28,7 @@ export const signupUser = async (name: string, email: string, password: string):
     ])
   }
 
-  const passwordHash = await hashPassword(password)
-
-  await prisma.user.create({
-    data: { email, passwordHash, name, picture: createGravatarUrl(email) },
-  })
+  await db.insert(db.$schema.user).values({ email, id: supabaseId }).onConflictDoNothing()
 }
 
 export const signupBodySchema = z.object({
@@ -69,16 +37,20 @@ export const signupBodySchema = z.object({
   password: z.string().min(8, { message: 'Password must be at least 8 characters long' }),
 })
 
-export const getUserByIdWithoutPassword = async (id: number): Promise<ApiUser | null> => {
-  return prisma.user.findUnique({
-    where: { id: id ?? -1 },
-    select: { id: true, email: true, name: true, picture: true, role: true },
-  })
+export const getUserByIdWithoutPassword = async (id: string): Promise<ApiUser | null> => {
+  const user = await db.query.user.findFirst({ where: (f, c) => c.eq(f.id, id) })
+  if (!user) return null
+  return user
 }
 
 export const getUserFromRequest = async (req: NextApiRequest): Promise<ApiUser | null> => {
-  const session = await getSession({ req })
-  return getUserByIdWithoutPassword((session?.user as any)?.id ?? -1)
+  const supabase = createPagesServerClient(req)
+  const { data: user, error } = await supabase.auth.getUser()
+  console.log({
+    user,
+    error,
+  })
+  return getUserByIdWithoutPassword(user?.user?.id ?? '')
 }
 
 export const userGuard = (user: ApiUser | null): ApiUser => {

@@ -1,3 +1,3 @@
 export const config = {
-  enableSignup: false,
+  enableSignup: true,
 } as const

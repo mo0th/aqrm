@@ -1,18 +1,18 @@
-import { PlusIcon } from '@heroicons/react/outline'
+import { PlusIcon } from '@heroicons/react/24/outline'
 import { FormEventHandler, useState } from 'react'
 import { Dialog } from '@headlessui/react'
 
-import { useCreateSite } from '@/lib/sites.client'
+import { useCreateSite } from '~/lib/sites.client'
 import InputField from '../ui/InputField'
 import Button from '../ui/Button'
-import { getFormFields } from '@/lib/forms.client'
+import { getFormFields } from '~/lib/forms.client'
 
 const CreateSiteTile: React.FC = () => {
   const [showModal, setShowModal] = useState(false)
   const createSite = useCreateSite()
 
   const handleClose = () => {
-    if (createSite.isLoading) return
+    if (createSite.isPending) return
 
     setShowModal(false)
     createSite.reset()
@@ -63,12 +63,12 @@ const CreateSiteTile: React.FC = () => {
             <Button
               variant="muted"
               type="button"
-              disabled={createSite.isLoading}
+              disabled={createSite.isPending}
               onClick={handleClose}
             >
               Cancel
             </Button>
-            <Button variant="primary" type="submit" loading={createSite.isLoading}>
+            <Button variant="primary" type="submit" loading={createSite.isPending}>
               Create
             </Button>
           </div>

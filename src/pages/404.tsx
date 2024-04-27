@@ -1,7 +1,6 @@
-import Link from '@/components/ui/Link'
-import { getLayout } from '@/components/layouts/CenteredCardLayout'
-import { useMe } from '@/lib/auth.client'
-import { config } from '@/config'
+import Link from '~/components/ui/Link'
+import { useMe } from '~/lib/auth.client'
+import { config } from '~/config'
 
 const links = [
   {
@@ -18,7 +17,7 @@ const links = [
   },
 ]
 
-const NotFound: Page = () => {
+const NotFound = () => {
   const { data: me } = useMe()
   return (
     <>
@@ -40,7 +39,5 @@ const NotFound: Page = () => {
     </>
   )
 }
-
-NotFound.getLayout = getLayout
 
 export default NotFound

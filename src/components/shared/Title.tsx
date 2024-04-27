@@ -8,10 +8,7 @@ interface TitleProps {
 const Title: React.FC<TitleProps> = ({ text, raw = false }) => {
   return (
     <Head>
-      <title>
-        {text}
-        {!raw && ' • AQRM'}
-      </title>
+      <title>{`${text}${raw ? '' : ' • AQRM'}`}</title>
     </Head>
   )
 }

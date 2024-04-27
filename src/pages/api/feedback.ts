@@ -1,5 +1,5 @@
-import { createApiHandler } from '@/lib/api.server'
-import { createFeedback, feedbackBodySchema } from '@/lib/feedback.server'
+import { createApiHandler } from '~/lib/api.server'
+import { createFeedback, feedbackBodySchema } from '~/lib/feedback.server'
 
 export default createApiHandler(async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*')

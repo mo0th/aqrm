@@ -1,16 +1,15 @@
-import SitesSection from '@/components/dashboard/SitesSection'
-import { getLayout } from '@/components/layouts/MainLayout'
-import Title from '@/components/shared/Title'
+import SitesSection from '~/components/dashboard/SitesSection'
+import MainLayout from '~/components/layouts/MainLayout/MainLayout'
 
-const SitesPage: Page = () => {
+import Title from '~/components/shared/Title'
+
+const SitesPage = () => {
   return (
-    <>
+    <MainLayout>
       <Title text="Your Sites" />
       <SitesSection />
-    </>
+    </MainLayout>
   )
 }
-
-SitesPage.getLayout = getLayout
 
 export default SitesPage

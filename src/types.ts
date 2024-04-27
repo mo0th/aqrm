@@ -1,6 +1,6 @@
-import type { User } from '@prisma/client'
+import { Doc } from './lib/db/types'
 
-export type ApiUser = Omit<User, 'passwordHash'>
+export type ApiUser = Omit<Doc<'user'>, 'passwordHash'>
 
 export type ApiRequestError = { message: 'string' }
 

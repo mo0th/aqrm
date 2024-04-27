@@ -1,4 +1,4 @@
-import { FeedbackType } from '@/types'
+import { FeedbackType } from '~/types'
 import clsx from 'clsx'
 
 interface FeedbackTypePillProps {

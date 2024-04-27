@@ -1,11 +1,11 @@
-import { getLayout } from '@/components/layouts/MainLayout'
-import Title from '@/components/shared/Title'
-import Button from '@/components/ui/Button'
-import { DEFAULT_COLORS, presets } from '@/lib/widget-themes'
+import Title from '~/components/shared/Title'
+import Button from '~/components/ui/Button'
+import { DEFAULT_COLORS, presets } from '~/lib/widget-themes'
 import Head from 'next/head'
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
+import MainLayout from '~/components/layouts/MainLayout/MainLayout'
 
-const WidgetTestPage: Page = () => {
+const WidgetTestPage = () => {
   const [colors, setColors] = useState(DEFAULT_COLORS)
   const [showCss, setShowCss] = useState(false)
   const [copied, setCopied] = useState(false)
@@ -26,18 +26,22 @@ const WidgetTestPage: Page = () => {
     let timeout: ReturnType<typeof setTimeout>
     let register
 
-    let widget: HTMLDivElement & { unregister: () => void }
+    type Widget = HTMLDivElement & { unregister: () => void }
+
+    let widget: Widget | null = null
 
     let counter = 0
 
     setLoading(true)
 
     const loop = () => {
-      register = (window as any)._AQRM_REGISTER
+      register = (
+        window as unknown as { _AQRM_REGISTER: (arg0: HTMLElement, arg1: HTMLElement) => Widget }
+      )._AQRM_REGISTER
 
       counter++
 
-      if (!register && mountedRef.current) {
+      if ((!register && mountedRef.current) || !trigger.current) {
         timeout = setTimeout(loop, 10)
         return
       }
@@ -82,9 +86,9 @@ const WidgetTestPage: Page = () => {
   }
 
   return (
-    <>
+    <MainLayout>
       <Head>
-        <script src={`${process.env.NEXT_PUBLIC_BASE_URL}/aqrm.js?s=lol`} defer />
+        <script src={`/aqrm.js?s=lol`} defer />
       </Head>
       <Title text="Theme Editor" />
       <h1 className="mb-8 text-4xl font-bold">Widget Theme Editor</h1>
@@ -143,10 +147,8 @@ const WidgetTestPage: Page = () => {
         </div>
       </div>
       <style>{css}</style>
-    </>
+    </MainLayout>
   )
 }
-
-WidgetTestPage.getLayout = getLayout
 
 export default WidgetTestPage

@@ -1,8 +1,9 @@
-import { ApiUser, FeedbackType } from '@/types'
-import type { Feedback } from '@prisma/client'
+import { ApiUser, FeedbackType } from '~/types'
+import type { Feedback } from '~/lib/db/types'
 import { z } from 'zod'
 import { ApiError } from './error.server'
-import prisma from './prisma.server'
+import { getSiteByName } from './sites.server'
+import { db } from './db/client'
 
 export const feedbackBodySchema = z.object({
   site: z.string().min(3),
@@ -25,64 +26,61 @@ export const createFeedback = async (
   { text, type, userId }: CreateFeedbackInput
 ): Promise<void> => {
   try {
-    const site = await prisma.site.findUnique({ where: { name: siteName } })
+    const site = await getSiteByName(siteName)
 
     if (!site?.allowFeedback) return
 
-    await prisma.feedback.create({
-      data: {
-        text,
-        type,
-        userId,
-        site: {
-          connect: {
-            name: siteName,
-          },
-        },
-      },
+    await db.insert(db.$schema.feedback).values({
+      text,
+      type,
+      userId,
+      siteId: site.id,
     })
   } catch (err) {
     console.error(err)
   }
 }
 
-const feedbackOrderBy = {
-  createdAt: 'desc',
-} as const
-
 export const getFeedbackForSite = async (
   user: ApiUser | null,
   siteName: string
 ): Promise<Feedback[]> => {
-  const siteAccessQuery = user ? [{ isPublic: true }, { ownerId: user.id }] : { isPublic: true }
+  const site = await getSiteByName(siteName)
 
-  return prisma.feedback.findMany({
-    where: {
-      site: {
-        AND: [{ name: siteName }, { OR: siteAccessQuery }],
-      },
-    },
-    orderBy: feedbackOrderBy,
+  if (!site) {
+    throw new ApiError(404, 'Site not found')
+  }
+
+  if (site.ownerId !== user?.id && !site.isPublic) {
+    throw new ApiError(403, 'This site is private')
+  }
+
+  return db.query.feedback.findMany({
+    where: (f, c) => c.eq(f.siteId, site.id),
+    orderBy: (f, o) => o.desc(f.createdAt),
   })
 }
 
 export const getFeedbackForUser = async (user: ApiUser): Promise<Feedback[]> => {
-  return prisma.feedback.findMany({
-    where: {
-      site: {
-        ownerId: user.id,
-      },
-    },
-    orderBy: feedbackOrderBy,
+  const siteIds = db
+    .select({
+      id: db.$schema.site.id,
+    })
+    .from(db.$schema.site)
+    .where(db.$cmp.eq(db.$schema.site.ownerId, user.id))
+
+  return db.query.feedback.findMany({
+    where: (f, c) => c.inArray(f.siteId, siteIds),
+    orderBy: (f, o) => o.desc(f.createdAt),
   })
 }
 
 export const deleteFeedback = async (user: ApiUser, feedbackId: string): Promise<void> => {
-  const feedback = await prisma.feedback.findUnique({
-    where: { id: feedbackId },
-    select: {
+  const feedback = await db.query.feedback.findFirst({
+    where: (f, c) => c.eq(f.id, feedbackId),
+    with: {
       site: {
-        select: {
+        columns: {
           ownerId: true,
         },
       },
@@ -97,5 +95,5 @@ export const deleteFeedback = async (user: ApiUser, feedbackId: string): Promise
     throw new ApiError(403, "You don't own the site for this feedback")
   }
 
-  await prisma.feedback.delete({ where: { id: feedbackId } })
+  await db.delete(db.$schema.feedback).where(db.$cmp.eq(db.$schema.feedback.id, feedbackId))
 }

@@ -1,4 +1,4 @@
-import { useDeleteSite } from '@/lib/sites.client'
+import { useDeleteSite } from '~/lib/sites.client'
 import { Dialog } from '@headlessui/react'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -46,7 +46,7 @@ const DeleteSiteButton: React.FC<DeleteSiteButtonProps> = ({ siteName }) => {
             <Button
               variant="muted"
               type="button"
-              disabled={deleteSite.isLoading}
+              disabled={deleteSite.isPending}
               onClick={handleClose}
             >
               Cancel
@@ -54,7 +54,7 @@ const DeleteSiteButton: React.FC<DeleteSiteButtonProps> = ({ siteName }) => {
             <Button
               variant="delete"
               type="submit"
-              loading={deleteSite.isLoading}
+              loading={deleteSite.isPending}
               onClick={handleDelete}
             >
               Delete

@@ -1,10 +1,10 @@
-import { useMe } from '@/lib/auth.client'
-import type { Site } from '@prisma/client'
+import { useMe } from '~/lib/auth.client'
 import FeedbackView from '../feedback/FeedbackView'
 import SiteSettings from './SiteSettings'
+import { Doc } from '~/lib/db/types'
 
 interface SiteViewProps {
-  site: Site
+  site: Doc<'site'>
 }
 
 const SiteView: React.FC<SiteViewProps> = ({ site }) => {

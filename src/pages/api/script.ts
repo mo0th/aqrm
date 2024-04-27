@@ -1,5 +1,5 @@
-import { buildWidgetScript } from '@/lib/widget.server'
-import type { NextApiHandler } from 'next-auth/internals/utils'
+import { buildWidgetScript } from '~/lib/widget.server'
+import type { NextApiHandler } from 'next'
 
 const handler: NextApiHandler = async (req, res) => {
   const { s } = req.query

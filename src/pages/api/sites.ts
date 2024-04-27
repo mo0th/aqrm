@@ -1,6 +1,6 @@
-import { createApiHandler } from '@/lib/api.server'
-import { getUserFromRequestOrThrow } from '@/lib/auth.server'
-import { createSite, createSiteBodySchema, getSitesByUser } from '@/lib/sites.server'
+import { createApiHandler } from '~/lib/api.server'
+import { getUserFromRequestOrThrow } from '~/lib/auth.server'
+import { createSite, createSiteBodySchema, getSitesByUser } from '~/lib/sites.server'
 
 export default createApiHandler(async (req, res) => {
   const user = await getUserFromRequestOrThrow(req)
