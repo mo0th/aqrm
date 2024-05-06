@@ -7,13 +7,15 @@ interface SiteScriptProps {
 }
 
 const getScript = (name: string) =>
-  `<!-- AQRM Script -->
-<script async defer src="${env.NEXT_PUBLIC_BASE_URL}/aqrm.js?s=${encodeURIComponent(
-    name
-  )}"></script>
+  `
+<!-- AQRM Script -->
+<script async defer src="${env.NEXT_PUBLIC_BASE_URL}/aqrm.js"></script>
 
 <!-- Popup Trigger -->
-<button data-aqrm>Give Feedback</button>`
+<aqrm-widget site="${name}">
+  <button>Give Feedback</button>
+</aqrm-widget>
+`.trim()
 
 const SiteScript: React.FC<SiteScriptProps> = ({ siteName }) => {
   const [copied, setCopied] = useState(false)

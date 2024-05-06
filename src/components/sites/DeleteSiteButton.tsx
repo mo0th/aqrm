@@ -25,7 +25,7 @@ const DeleteSiteButton: React.FC<DeleteSiteButtonProps> = ({ siteName }) => {
   return (
     <>
       <Button variant="delete" onClick={() => setShowModal(true)}>
-        Delete &quot;{siteName}&qout;
+        Delete &quot;{siteName}&quot;
       </Button>
 
       <Dialog
