@@ -96,13 +96,16 @@
 
     form.onsubmit = e => {
       e.preventDefault()
+
+      let body = JSON.stringify(Object.fromEntries(new FormData(form)))
+
       submitBtn.dataset.l = ''
       textarea.disabled = true
       submitBtn.disabled = true
 
       fetch(window._AQRM_BASE_URL + '/api/feedback', {
         method: 'POST',
-        body: JSON.stringify(Object.fromEntries(new FormData(form))),
+        body,
       }).finally(_ => {
         delete submitBtn.dataset.l
         textarea.disabled = false
