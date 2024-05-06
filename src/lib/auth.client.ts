@@ -1,5 +1,5 @@
 import type { ApiUser } from '~/types'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { api } from './api.client'
 import { createBrowserClient } from './supabase/client'
@@ -26,26 +26,18 @@ export const useSignup = () => {
 }
 
 export const useLogin = () => {
-  const queryClient = useQueryClient()
-  const router = useRouter()
-
   return useMutation({
     mutationFn: async (vars: { email: string }) => {
       const supabase = createBrowserClient()
       const response = await supabase.auth.signInWithOtp({
         email: vars.email,
-        options: {
-          shouldCreateUser: false,
-        },
       })
+
+      console.log('response', response)
 
       if (response?.error) {
         throw response?.error
       }
-    },
-    onSuccess: () => {
-      queryClient.clear()
-      router.push('/sites')
     },
   })
 }

@@ -1,5 +1,3 @@
-import { queryClient } from './query.client'
-
 type ApiOptions = {
   data?: Record<string, any>
   method?: 'GET' | 'POST' | 'PATCH' | 'DELETE' | 'PUT'
@@ -18,7 +16,6 @@ const api = async <TResult = Record<string, unknown>>(
   const response = await fetch(url, init)
 
   if (response.status === 401) {
-    queryClient.clear()
     return Promise.reject({ message: 'Please Login' })
   }
 

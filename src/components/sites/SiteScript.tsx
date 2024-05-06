@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Button from '../ui/Button'
+import { env } from '~/env'
 
 interface SiteScriptProps {
   siteName: string
@@ -7,7 +8,7 @@ interface SiteScriptProps {
 
 const getScript = (name: string) =>
   `<!-- AQRM Script -->
-<script async defer src="${process.env.NEXT_PUBLIC_BASE_URL}/aqrm.js?s=${encodeURIComponent(
+<script async defer src="${env.NEXT_PUBLIC_BASE_URL}/aqrm.js?s=${encodeURIComponent(
     name
   )}"></script>
 

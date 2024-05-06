@@ -1,10 +1,11 @@
 import type { NextApiHandler } from 'next'
 import { ZodError } from 'zod'
 import { ApiError } from './error.server'
+import { env } from '~/env'
 
 export const createApiHandler = (handler: NextApiHandler): NextApiHandler => {
   return async (req, res) => {
-    if (process.env.NODE_ENV !== 'production') {
+    if (env.NODE_ENV !== 'production') {
       console.log(`${req.method} ${req.url}`)
     }
 
@@ -16,7 +17,7 @@ export const createApiHandler = (handler: NextApiHandler): NextApiHandler => {
       } else if (err instanceof ApiError) {
         res.status(err.statusCode).json({
           message: err.message,
-          ...(process.env.NODE_ENV !== 'production' ? { stack: err.stack } : undefined),
+          ...(env.NODE_ENV !== 'production' ? { stack: err.stack } : undefined),
         })
       } else if (err instanceof ZodError) {
         const issues: Record<string, string> = {}

@@ -34,7 +34,7 @@ export const useCreateSite = () => {
 }
 
 export const useSite = (siteName?: string) => {
-  return useQuery<Site, ApiRequestError>({
+  return useQuery<{ site: Site }, ApiRequestError>({
     queryKey: ['sites', siteName],
     queryFn: () => api(`/api/sites/${siteName}`),
     enabled: typeof siteName === 'string',

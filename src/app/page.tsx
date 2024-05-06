@@ -1,3 +1,5 @@
+import { redirect } from 'next/navigation'
+
 export default function Route() {
-  return <div>hi</div>
+  redirect('/login')
 }

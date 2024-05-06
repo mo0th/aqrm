@@ -2,9 +2,10 @@ import { getOperators, getOrderByOperators } from 'drizzle-orm'
 import { drizzle } from 'drizzle-orm/postgres-js'
 import postgres from 'postgres'
 import * as schema from './schema'
+import { env } from '~/env'
 
 const createDb = () => {
-  const connectionString = process.env.DATABASE_URL!
+  const connectionString = env.DATABASE_URL
   const client = postgres(connectionString, { prepare: false })
 
   const db = drizzle(client, { schema })
@@ -21,4 +22,4 @@ declare global {
   var __db: ReturnType<typeof createDb> | undefined
 }
 
-export const db = globalThis.__db || createDb()
+export const db = globalThis.__db || (globalThis.__db = createDb())

@@ -1,3 +1,4 @@
+'use client'
 import Spinner from '~/components/ui/Spinner'
 import Link from '~/components/ui/Link'
 import CreateSiteTile from '~/components/sites/CreateSiteTile'

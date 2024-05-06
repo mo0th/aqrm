@@ -22,7 +22,9 @@ export async function GET(request: NextRequest) {
       token_hash,
     })
     if (!error && data.user?.email) {
-      await createUser(data.user.id, data.user.email)
+      if (type === 'signup') {
+        await createUser(data.user.id, data.user.email)
+      }
       redirectTo.searchParams.delete('next')
       return NextResponse.redirect(redirectTo)
     }

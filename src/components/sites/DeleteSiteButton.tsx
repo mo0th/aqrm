@@ -1,6 +1,6 @@
 import { useDeleteSite } from '~/lib/sites.client'
 import { Dialog } from '@headlessui/react'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import Button from '../ui/Button'
 
@@ -19,7 +19,7 @@ const DeleteSiteButton: React.FC<DeleteSiteButtonProps> = ({ siteName }) => {
 
   const handleDelete = async () => {
     await deleteSite.mutateAsync()
-    router.push('/dashboard')
+    router.push('/sites')
   }
 
   return (

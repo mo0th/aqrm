@@ -1,4 +1,3 @@
-import { hash, compare } from 'bcryptjs'
 import crypto from 'crypto'
 import { z, ZodError } from 'zod'
 
@@ -8,6 +7,7 @@ import type { NextApiRequest } from 'next'
 import { ApiError } from './error.server'
 import { db } from './db/client'
 import { createPagesServerClient } from './supabase/pages-server'
+import { createServerClient } from './supabase/server'
 
 const createGravatarUrl = (email: string): string => {
   const hashedEmail = crypto.createHash('md5').update(email).digest('hex')
@@ -45,11 +45,7 @@ export const getUserByIdWithoutPassword = async (id: string): Promise<ApiUser | 
 
 export const getUserFromRequest = async (req: NextApiRequest): Promise<ApiUser | null> => {
   const supabase = createPagesServerClient(req)
-  const { data: user, error } = await supabase.auth.getUser()
-  console.log({
-    user,
-    error,
-  })
+  const { data: user } = await supabase.auth.getUser()
   return getUserByIdWithoutPassword(user?.user?.id ?? '')
 }
 
@@ -65,4 +61,16 @@ export const getUserFromRequestOrThrow = async (req: NextApiRequest): Promise<Ap
   const user = await getUserFromRequest(req)
 
   return userGuard(user)
+}
+
+export const getCurrentUser = async () => {
+  const supabase = createServerClient()
+  const { data: user } = await supabase.auth.getUser()
+  return getUserByIdWithoutPassword(user?.user?.id ?? '')
+}
+
+export const requireCurrentUser = async () => {
+  const user = await getCurrentUser()
+  if (!user) throw new ApiError(401, 'Please Log In')
+  return user
 }

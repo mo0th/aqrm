@@ -1,3 +1,6 @@
+import { QueryClientProvider } from '~/lib/tanstack-query'
+import '~/styles/globals.css'
+
 export default function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html lang="en">
@@ -31,7 +34,9 @@ export default function RootLayout(props: { children: React.ReactNode }) {
           src="https://mooth.tech/js/potato.js"
         />
       </head>
-      <body className="h-full min-h-screen text-black bg-gray-100">{props.children}</body>
+      <body className="h-full min-h-screen text-black bg-gray-100">
+        <QueryClientProvider>{props.children}</QueryClientProvider>
+      </body>
     </html>
   )
 }

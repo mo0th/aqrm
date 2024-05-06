@@ -47,6 +47,8 @@ export const getFeedbackForSite = async (
 ): Promise<Feedback[]> => {
   const site = await getSiteByName(siteName)
 
+  console.log({ site, siteName, user })
+
   if (!site) {
     throw new ApiError(404, 'Site not found')
   }
