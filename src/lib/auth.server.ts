@@ -1,4 +1,3 @@
-import crypto from 'crypto'
 import { z, ZodError } from 'zod'
 
 import type { ApiUser } from '~/types'
@@ -8,12 +7,6 @@ import { ApiError } from './error.server'
 import { db } from './db/client'
 import { createPagesServerClient } from './supabase/pages-server'
 import { createServerClient } from './supabase/server'
-
-const createGravatarUrl = (email: string): string => {
-  const hashedEmail = crypto.createHash('md5').update(email).digest('hex')
-
-  return `https://www.gravatar.com/avatar/${hashedEmail}?d=identicon`
-}
 
 export const createUser = async (supabaseId: string, email: string): Promise<void> => {
   // normalise email for gravatar
