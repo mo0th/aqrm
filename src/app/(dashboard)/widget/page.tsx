@@ -3,76 +3,24 @@
 import Title from '~/components/shared/Title'
 import Button from '~/components/ui/Button'
 import { DEFAULT_COLORS, presets } from '~/lib/widget-themes'
-import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
-import { env } from '~/env'
+import { Fragment, useState } from 'react'
+
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace JSX {
+    interface IntrinsicElements {
+      'aqrm-widget': React.DetailedHTMLProps<
+        React.HTMLAttributes<HTMLElement> & { site: string; sticky?: boolean },
+        HTMLElement
+      >
+    }
+  }
+}
 
 const WidgetTestPage = () => {
   const [colors, setColors] = useState(DEFAULT_COLORS)
   const [showCss, setShowCss] = useState(false)
   const [copied, setCopied] = useState(false)
-  const [loading, setLoading] = useState(true)
-  const trigger = useRef<HTMLDivElement>(null)
-
-  const mountedRef = useRef(false)
-
-  useEffect(() => {
-    mountedRef.current = true
-
-    return () => {
-      mountedRef.current = false
-    }
-  }, [])
-
-  useEffect(() => {
-    let timeout: ReturnType<typeof setTimeout>
-    let register
-
-    type Widget = HTMLDivElement & { unregister: () => void }
-
-    let widget: Widget | null = null
-
-    let counter = 0
-
-    setLoading(true)
-
-    const loop = () => {
-      register = (
-        window as unknown as { _AQRM_REGISTER: (arg0: HTMLElement, arg1: HTMLElement) => Widget }
-      )._AQRM_REGISTER
-
-      counter++
-
-      if ((!register && mountedRef.current) || !trigger.current) {
-        timeout = setTimeout(loop, 10)
-        return
-      }
-
-      widget = register(document.body, trigger.current)
-      setLoading(false)
-      trigger.current?.click()
-
-      if (env.NEXT_PUBLIC_NODE_ENV !== 'production') {
-        console.log(`took ${counter} tries`)
-      }
-    }
-
-    timeout = setTimeout(loop, 10)
-
-    return () => {
-      widget?.unregister()
-      clearTimeout(timeout)
-    }
-  }, [])
-
-  const triggerElement = useMemo(() => {
-    return (
-      <span ref={trigger}>
-        <Button variant="primary" loading={loading}>
-          Trigger Popup
-        </Button>
-      </span>
-    )
-  }, [loading])
 
   const colorEntries = Object.entries(colors)
 
@@ -142,7 +90,9 @@ const WidgetTestPage = () => {
         </div>
         <div className="row-start-1 md:col-start-2">
           <div className="flex items-center justify-center max-h-[24rem] h-full sticky top-0">
-            {triggerElement}
+            <aqrm-widget site="lol" sticky>
+              <Button variant="primary">Trigger Popup</Button>
+            </aqrm-widget>
           </div>
         </div>
       </div>

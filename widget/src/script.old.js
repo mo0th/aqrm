@@ -1,35 +1,37 @@
-class AQRMWidget extends HTMLElement {
-  constructor() {
-    super()
-  }
+;(() => {
+  /**
+   * @returns {HTMLElement}
+   */
+  let createElement = tag => document.createElement(tag)
+  let getRect = e => e.getBoundingClientRect()
 
-  connectedCallback() {
-    let root = this.attachShadow({ mode: 'closed' })
-    root.innerHTML = '{{{widgetHtml}}}<style>{{{css}}}</style>'
-    /**
-     * @type {HTMLElement}
-     */
-    let widget = root.firstChild
-    let trigger = this.children[0]
-    let isSticky = this.hasAttribute('sticky')
-    let getRect = e => e.getBoundingClientRect()
-    let selectTypeStatus = 't'
-    /** @type {<T>(selectors: T) => ReturnType<typeof document.querySelector<T>>} */
+  let selectTypeStatus = 't'
+
+  let style = createElement('style')
+  style.innerHTML = '{{{css}}}'
+  document.head.append(style)
+
+  let registerWidget = (parent, trigger, isSticky) => {
+    let container = createElement('div')
+    container.innerHTML = '{{{widgetHtml}}}'
+    parent.append(container)
+
+    let widget = container.firstChild
     let widgetQuerySelector = selector => widget.querySelector(selector)
     /** @type {HTMLFormElement} */
     let form = widgetQuerySelector('form')
     /** @type {HTMLTextAreaElement} */
     let textarea = widgetQuerySelector('textarea')
     /** @type {HTMLButtonElement} */
-    let submitBtn = widgetQuerySelector('#submit')
+    let submitBtn = widgetQuerySelector('#aqrm-submit')
     /** @type {HTMLHeadingElement} */
-    let heading = widgetQuerySelector('.heading')
-    /** @type {HTMLButtonElement} */
+    let heading = widgetQuerySelector('.aqrm-heading')
+    /** @type {HTMLInputElement} */
     let typeInput = widgetQuerySelector('[name=type]')
 
-    /**
-     * @type {(state: 'i' | 't' | 's') => void}
-     */
+    widgetQuerySelector('[name=site]').value = window._AQRM_SITE_NAME
+    widgetQuerySelector('[name=userId]').value = trigger.getAttribute('data-aqrm-user-id')
+
     let setState = state => {
       if (state === selectTypeStatus) heading.innerText = "What's on your mind?"
       if (state === 'i') {
@@ -39,10 +41,7 @@ class AQRMWidget extends HTMLElement {
       widget.dataset.s = state
     }
 
-    /**
-     * @type {() => void}
-     */
-    let reposition = _ => {
+    let reposition = () => {
       let widgetRect = getRect(widget)
       let top = 16
 
@@ -66,10 +65,7 @@ class AQRMWidget extends HTMLElement {
       widget.style.left = left + 'px'
     }
 
-    /**
-     * @type {() => void}
-     */
-    let showWidget = _ => {
+    let showWidget = () => {
       widget.hidden = false
       widget.focus()
       reposition()
@@ -77,10 +73,7 @@ class AQRMWidget extends HTMLElement {
       window.addEventListener('resize', reposition)
     }
 
-    /**
-     * @type {() => void}
-     */
-    let hideWidget = _ => {
+    let hideWidget = () => {
       if (isSticky) {
         setState(selectTypeStatus)
       } else {
@@ -91,9 +84,6 @@ class AQRMWidget extends HTMLElement {
       }
     }
 
-    /**
-     * @type {() => void}
-     */
     let triggerHandler = () => {
       if (widget.hidden) {
         showWidget()
@@ -107,19 +97,13 @@ class AQRMWidget extends HTMLElement {
     form.onsubmit = e => {
       e.preventDefault()
 
-      let body = JSON.stringify({
-        ...Object.fromEntries(new FormData(form)),
-        site: this.getAttribute('site'),
-        userId: this.getAttribute('user-id'),
-      })
+      let body = JSON.stringify(Object.fromEntries(new FormData(form)))
 
       submitBtn.dataset.l = ''
       textarea.disabled = true
       submitBtn.disabled = true
 
-      // this is defined globally per-script
-      // eslint-disable-next-line no-undef
-      fetch(_AQRM_BASE_URL + '/api/feedback', {
+      fetch(window._AQRM_BASE_URL + '/api/feedback', {
         method: 'POST',
         body,
       }).finally(_ => {
@@ -130,12 +114,12 @@ class AQRMWidget extends HTMLElement {
       })
     }
 
-    widgetQuerySelector('#btn-close').onclick = _ => {
+    widgetQuerySelector('#aqrm-btn-close').onclick = _ => {
       if (!isSticky) hideWidget()
       setState(selectTypeStatus)
     }
 
-    widgetQuerySelector('#btn-back').onclick = _ => {
+    widgetQuerySelector('#aqrm-btn-back').onclick = _ => {
       setState(selectTypeStatus)
     }
 
@@ -143,9 +127,9 @@ class AQRMWidget extends HTMLElement {
       submitBtn.disabled = !textarea.value
     }
 
-    widgetQuerySelector('.success .btn-s').onclick = _ => setState(selectTypeStatus)
+    widgetQuerySelector('.aqrm-success button').onclick = _ => setState(selectTypeStatus)
 
-    widgetQuerySelector('.select-type').onclick = e => {
+    widgetQuerySelector('.aqrm-select-type').onclick = e => {
       let btn = e.target.closest('button')
 
       if (!btn) return
@@ -153,13 +137,10 @@ class AQRMWidget extends HTMLElement {
       let type = btn.dataset.t
 
       let [placeholder, headingText] = {
-        // ISSUE
-        S: ['I noticed that...', 'Report an issue'],
-        // IDEA
-        D: ['I would love...', 'Share an idea'],
-        // OTHER
-        T: ['What do you want to know about us?', 'Tell us anything!'],
-      }[type[1]]
+        ISSUE: ['I noticed that...', 'Report an Issue'],
+        IDEA: ['I would love...', 'Share an Idea'],
+        OTHER: ['What do you want to know about us?', 'Tell us anything!'],
+      }[type]
       textarea.placeholder = placeholder
       heading.innerText = headingText
 
@@ -170,6 +151,16 @@ class AQRMWidget extends HTMLElement {
     }
 
     if (isSticky) showWidget()
+
+    widget.unregister = () => {
+      trigger.removeEventListener('click', triggerHandler)
+      container.remove()
+    }
+
+    return widget
   }
-}
-customElements.define('aqrm-widget', AQRMWidget)
+
+  let trigger = document.querySelector('[data-aqrm]')
+  if (trigger) registerWidget(document.body, trigger)
+  window._AQRM_REGISTER = registerWidget
+})()
