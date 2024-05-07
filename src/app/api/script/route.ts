@@ -1,5 +1,7 @@
 import { buildWidgetScript } from '~/lib/widget.server'
 
+export const dynamic = 'force-dynamic'
+
 export async function GET() {
   const script = await buildWidgetScript()
 
