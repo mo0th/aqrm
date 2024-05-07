@@ -2,9 +2,7 @@ import { getCurrentUser } from '~/lib/auth.server'
 import { deleteSite, editSite, editSiteBodySchema, getSiteByName } from '~/lib/sites.server'
 
 export async function GET(_req: Request, props: { params: { name: string } }) {
-  console.log('props', props)
   const user = await getCurrentUser()
-  console.log('user', user)
   const siteName = props.params.name
 
   if (!siteName) return Response.json({ site: null, loggedIn: false })

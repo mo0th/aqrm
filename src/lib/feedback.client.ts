@@ -4,7 +4,7 @@ import { api } from './api.client'
 import { Feedback } from './db/types'
 
 export const useSiteFeedback = (siteName: string) => {
-  return useQuery<Feedback[], ApiRequestError>({
+  return useQuery<(Feedback & { imageUrl?: string })[], ApiRequestError>({
     queryKey: ['feedback', siteName],
     queryFn: () => api(`/api/sites/${siteName}/feedback`),
   })

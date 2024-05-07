@@ -45,6 +45,13 @@ const FeedbackView: React.FC<FeedbackViewProps> = ({ siteName }) => {
                 </span>
               </div>
               <p>{feedbackItem.text}</p>
+              {feedbackItem.imageUrl ? (
+                <img
+                  src={feedbackItem.imageUrl}
+                  alt="TODO"
+                  className="w-full aspect-video object-cover mt-4"
+                />
+              ) : null}
               <hr className="my-4 border-gray-300" />
               <div className="flex items-center justify-between space-x-1">
                 {feedbackItem.userId && (

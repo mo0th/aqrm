@@ -8,7 +8,17 @@ const createDb = () => {
   const connectionString = env.DATABASE_URL
   const client = postgres(connectionString, { prepare: false })
 
-  const db = drizzle(client, { schema })
+  const db = drizzle(client, {
+    schema,
+    logger: {
+      logQuery(query, params) {
+        console.log({
+          query,
+          params,
+        })
+      },
+    },
+  })
   return Object.assign(db, {
     $schema: schema,
     $cmp: getOperators(),

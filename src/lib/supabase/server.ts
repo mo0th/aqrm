@@ -31,3 +31,13 @@ export function createServerClient() {
     },
   })
 }
+
+export function createServerAdminClient() {
+  return createServerClientSB(env.NEXT_PUBLIC_SUPABASE_URL, env.SUPABASE_SERVICE_KEY, {
+    cookies: {},
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false,
+    },
+  })
+}

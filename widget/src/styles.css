@@ -82,6 +82,7 @@ textarea {
 }
 
 button,
+svg,
 textarea {
   transition: all 150ms ease-in-out;
   font-size: 14px;
@@ -194,6 +195,15 @@ footer {
   display: none;
   margin-top: 8px;
   gap: 4px;
+}
+
+#pic {
+  flex: 0;
+  padding: 4px;
+  display: grid;
+  place-items: center;
+  /* background: var(--base); */
+  fill: var(--primary-contrast);
 }
 
 .select-type {

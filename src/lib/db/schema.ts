@@ -56,6 +56,7 @@ export const feedback = pgTable('feedback', {
   siteId: text('siteId')
     .notNull()
     .references(() => site.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
+  imagePath: text('imagePath'),
   createdAt: timestamp('createdAt', { precision: 3, mode: 'string' }).defaultNow().notNull(),
   userId: text('userId'),
 })

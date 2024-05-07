@@ -64,6 +64,14 @@
           d="M6 14l3 3L18 8"
         />
       </g>
+      <g id="i-pic">
+        <path d="M9.5 8.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"></path>
+        <path
+          clip-rule="evenodd"
+          fill-rule="evenodd"
+          d="M2.5 5A1.5 1.5 0 0 0 1 6.5v5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5v-5A1.5 1.5 0 0 0 13.5 5h-.879a1.5 1.5 0 0 1-1.06-.44l-1.122-1.12A1.5 1.5 0 0 0 9.38 3H6.62a1.5 1.5 0 0 0-1.06.44L4.439 4.56A1.5 1.5 0 0 1 3.38 5H2.5ZM11 8.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+        ></path>
+      </g>
     </defs>
   </svg>
 
@@ -109,6 +117,12 @@
     <textarea class="br-m" id="text" name="text"></textarea>
     <input type="hidden" name="type" />
     <div class="form-actions">
+      <button type="button" id="pic" class="btn-m br-m">
+        <svg viewBox="0 0 16 16" width="24" height="24">
+          <use href="#i-pic" />
+        </svg>
+        <span class="spinner"></span>
+      </button>
       <button id="submit" class="btn-m br-m" disabled>
         <span class="btn-text">Send Feedback</span>
         <span class="spinner"></span>

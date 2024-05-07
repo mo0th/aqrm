@@ -104,18 +104,68 @@ class AQRMWidget extends HTMLElement {
 
     trigger.addEventListener('click', triggerHandler)
 
-    form.onsubmit = e => {
+    let img
+    widgetQuerySelector('#pic').onclick = async _ => {
+      let stream
+      img = navigator.mediaDevices
+        .getDisplayMedia({ video: true })
+        .then(s => {
+          stream = s
+          return new Promise((res, rej) => {
+            let v = document.createElement('video')
+            v.srcObject = s
+            v.play()
+            v.onloadeddata = _ => res(v)
+            v.onerror = rej
+          })
+        })
+        .then(v => {
+          return new Promise((res, rej) => {
+            setTimeout(() => {
+              let c = document.createElement('canvas')
+              c.width = v.videoWidth
+              c.height = v.videoHeight
+              c.getContext('2d').drawImage(v, 0, 0)
+              c.toBlob(
+                b => (b ? res(b) : rej(b)),
+                ['safari', 'ersion'].every(s => navigator.userAgent.includes(s))
+                  ? 'image/jpeg'
+                  : 'image/webp'
+              )
+            }, 150)
+          })
+        })
+        .finally(_ => {
+          stream?.getVideoTracks().forEach(t => t.stop())
+        })
+      // document.body.appendChild(v)
+      // const image = document.createElement('img')
+      // image.src = URL.createObjectURL(await img)
+      // document.body.appendChild(image)
+    }
+
+    form.onsubmit = async e => {
       e.preventDefault()
 
-      let body = JSON.stringify({
-        ...Object.fromEntries(new FormData(form)),
-        site: this.getAttribute('site'),
-        userId: this.getAttribute('user-id'),
-      })
+      let body = new FormData(form)
+      body.set('site', this.getAttribute('site'))
+      let uid = this.getAttribute('user-id')
+      if (uid) {
+        body.set('userId', uid)
+      }
 
       submitBtn.dataset.l = ''
       textarea.disabled = true
       submitBtn.disabled = true
+
+      if (img) {
+        console.log('img', img)
+        img = await img.catch(_ => '')
+        console.log('img', img)
+        body.set('img', img)
+      }
+
+      console.log(Object.fromEntries(body))
 
       // this is defined globally per-script
       // eslint-disable-next-line no-undef
