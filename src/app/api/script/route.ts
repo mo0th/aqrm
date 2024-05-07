@@ -1,10 +1,7 @@
 import { buildWidgetScript } from '~/lib/widget.server'
 
-export async function GET(req: Request) {
-  const url = new URL(req.url)
-  const site = url.searchParams.get('s')
-
-  const script = await buildWidgetScript(typeof site === 'string' ? site : '')
+export async function GET() {
+  const script = await buildWidgetScript()
 
   return new Response(script, {
     headers: {

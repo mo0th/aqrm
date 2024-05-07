@@ -54,7 +54,7 @@ const CreateSiteTile: React.FC = () => {
             id="name"
             name="name"
             label="Site Name"
-            placeholder="mooth.tech"
+            placeholder="soorria.com"
             error={createSite.error?.issues.name}
             required
           />

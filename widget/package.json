@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "main": "dist/script.js",
-  "author": "Soorria Saruva <soorria.ss@gmail.com> (http://mooth.tech)",
+  "author": "Soorria Saruva <soorria.ss@gmail.com> (http://soorria.com)",
   "license": "MIT",
   "scripts": {
     "build": "node compile.js",

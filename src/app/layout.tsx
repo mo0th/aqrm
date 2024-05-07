@@ -29,9 +29,9 @@ export default function RootLayout(props: { children: React.ReactNode }) {
         <script
           async
           defer
-          data-domain="aqrm.mooth.tech"
-          data-api="https://mooth.tech/proxy/api/event"
-          src="https://mooth.tech/js/potato.js"
+          data-domain="aqrm.soorria.com"
+          data-api="https://soorria.com/proxy/api/event"
+          src="https://soorria.com/js/potato.js"
         />
       </head>
       <body className="h-full min-h-screen text-black bg-gray-100">
