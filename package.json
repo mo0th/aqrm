@@ -5,9 +5,8 @@
   "scripts": {
     "predev": "yarn build:widget",
     "dev": "next dev",
-    "build": "next build",
+    "build": "pnpm run build:widget && next build",
     "build:widget": "cd widget && pnpm run build && cp ./dist/script.js ../public",
-    "prebuild": "yarn build:widget",
     "postinstall": "cd widget && pnpm i",
     "start": "next start",
     "export": "next export",
