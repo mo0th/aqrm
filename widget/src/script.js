@@ -108,7 +108,18 @@ class AQRMWidget extends HTMLElement {
     widgetQuerySelector('#pic').onclick = async _ => {
       let stream
       img = navigator.mediaDevices
-        .getDisplayMedia({ video: true })
+        .getDisplayMedia({
+          video: true,
+          audio: false,
+          /**
+           * Yoinked from https://github.com/getsentry/sentry-javascript/blob/77ce28a4fe4d0c561bee274652ed83274e89879a/packages/feedback/src/screenshot/components/useTakeScreenshot.tsx#L28-L32
+           */
+          // experimental flags: https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getDisplayMedia#prefercurrenttab
+          monitorTypeSurfaces: 'exclude',
+          preferCurrentTab: true,
+          selfBrowserSurface: 'include',
+          surfaceSwitching: 'exclude',
+        })
         .then(s => {
           stream = s
           return new Promise((res, rej) => {
